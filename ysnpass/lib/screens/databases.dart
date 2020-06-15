@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:ysnpass/model/database_model.dart';
 import 'package:ysnpass/model/databasepool_model.dart';
+
+import 'create_database.dart';
 
 class Databases extends StatefulWidget {
   @override
@@ -30,7 +31,10 @@ class _DatabasesState extends State<Databases> {
               icon: Icon(Icons.add),
               label: Text('CREATE DATABASE'),
               onPressed: () {
-                databasePool.add(Database());
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreateDatabase()),
+                );
               },
             ),
           ],

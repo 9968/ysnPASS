@@ -1,3 +1,5 @@
-class Database {
-  String name = "hallo";
+class DatabaseModel {
+  String name;
+
+  DatabaseModel(this.name);
 }

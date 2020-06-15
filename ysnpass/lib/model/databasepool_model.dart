@@ -5,12 +5,12 @@ import 'package:flutter/cupertino.dart';
 import 'database_model.dart';
 
 class DatabasePoolModel extends ChangeNotifier {
-  final List<Database> _databases = [];
+  final List<DatabaseModel> _databases = [];
 
-  UnmodifiableListView<Database> get databases =>
+  UnmodifiableListView<DatabaseModel> get databases =>
       UnmodifiableListView(_databases);
 
-  void add(Database database) {
+  void add(DatabaseModel database) {
     _databases.add(database);
     notifyListeners();
   }
