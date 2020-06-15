@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:ysnpass/screens/databases.dart';
+import 'package:provider/provider.dart';
+import 'package:ysnpass/screens/databases/databases.dart';
+
+import 'model/databasepool_model.dart';
 
 void main() {
-  runApp(YsnPass());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => DatabasePoolModel(),
+      child: YsnPass(),
+    ),
+  );
 }
 
 class YsnPass extends StatelessWidget {

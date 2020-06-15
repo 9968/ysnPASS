@@ -1,5 +1,3 @@
 class Database {
-  var name = '';
-
-  Database(this.name);
+  String name = "hallo";
 }
