@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'model/databasepool_model.dart';
-import 'screens/databases.dart';
+import 'model/database_list.dart';
+import 'screens/view_databases.dart';
 
 void main() {
   runApp(
     ChangeNotifierProvider(
-      create: (context) => DatabasePoolModel(),
+      create: (context) => DatabaseList(),
       child: YsnPass(),
     ),
   );
@@ -23,7 +23,7 @@ class YsnPass extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: Databases(),
+      home: ViewDatabases(),
     );
   }
 }

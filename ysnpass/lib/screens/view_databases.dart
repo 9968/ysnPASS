@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:ysnpass/model/databasepool_model.dart';
+import 'package:ysnpass/model/database_list.dart';
 
 import 'create_database.dart';
 
-class Databases extends StatefulWidget {
+class ViewDatabases extends StatefulWidget {
   @override
-  _DatabasesState createState() => _DatabasesState();
+  _ViewDatabasesState createState() => _ViewDatabasesState();
 }
 
-class _DatabasesState extends State<Databases> {
+class _ViewDatabasesState extends State<ViewDatabases> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Databases'),
+        title: Text('My Databases'),
       ),
-      body: Consumer<DatabasePoolModel>(
+      body: Consumer<DatabaseList>(
         builder: (context, databasePool, child) => Column(
           children: <Widget>[
             Expanded(
