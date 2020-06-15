@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:ysnpass/model/database.dart';
 import 'package:ysnpass/model/database_list.dart';
 
+import 'view_database.dart';
+
 class CreateDatabase extends StatefulWidget {
   @override
   createState() => CreateDatabaseState();
@@ -33,6 +35,10 @@ class CreateDatabaseState extends State<CreateDatabase> {
                 if (_formKey.currentState.validate()) {
                   Provider.of<DatabaseList>(context, listen: false)
                       .add(Database(_formController.text));
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => ViewDatabase()),
+                  );
                 }
               },
               child: Text('CREATE'),
