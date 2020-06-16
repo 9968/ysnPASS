@@ -10,11 +10,16 @@ class Database extends ChangeNotifier {
   Database();
   Database.name(this.name);
 
-  UnmodifiableListView<Password> get passwordList => UnmodifiableListView(_passwordList);
+  UnmodifiableListView<Password> get passwordList =>
+      UnmodifiableListView(_passwordList);
 
   void addPassword(Password password) {
     _passwordList.add(password);
     notifyListeners();
+  }
+
+  void removePassword(Password password) {
+    _passwordList.remove(password);
   }
 
   Database load(Database database) {

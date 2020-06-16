@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ysnpass/model/database.dart';
 import 'package:ysnpass/model/password.dart';
-import 'package:ysnpass/screens/view_database/index.dart';
 
 class CreatePassword extends StatelessWidget {
   @override
