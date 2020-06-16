@@ -1,25 +1,25 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
-import 'password.dart';
+import 'package:ysnpass/model/password_entry.dart';
 
 class Database extends ChangeNotifier {
   String name;
-  List<Password> _passwordList = [];
+  List<PasswordEntry> _passwordList = [];
 
   Database();
   Database.name(this.name);
 
-  UnmodifiableListView<Password> get passwordList =>
+  UnmodifiableListView<PasswordEntry> get passwordList =>
       UnmodifiableListView(_passwordList);
 
-  void addPassword(Password password) {
-    _passwordList.add(password);
+  void addPassword(PasswordEntry passwordEntry) {
+    _passwordList.add(passwordEntry);
     notifyListeners();
   }
 
-  void removePassword(Password password) {
-    _passwordList.remove(password);
+  void removePassword(PasswordEntry passwordEntry) {
+    _passwordList.remove(passwordEntry);
   }
 
   Database load(Database database) {

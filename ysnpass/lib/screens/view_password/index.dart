@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:ysnpass/model/password.dart';
+import 'package:ysnpass/model/password_entry.dart';
 
-class ViewPassword extends StatelessWidget {
-  final Password password;
+class ViewPasswordEntry extends StatelessWidget {
+  final PasswordEntry passwordEntry;
 
-  ViewPassword(this.password);
+  ViewPasswordEntry(this.passwordEntry);
 
   @override
   Widget build(BuildContext context) {
@@ -14,8 +14,8 @@ class ViewPassword extends StatelessWidget {
       ),
       body: Column(
         children: [
-          Text(password.username),
-          Text(password.password),
+          Text(passwordEntry.username),
+          Text(passwordEntry.password),
         ],
       ),
     );
