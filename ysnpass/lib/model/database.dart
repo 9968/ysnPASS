@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'password.dart';
 
@@ -7,6 +9,8 @@ class Database extends ChangeNotifier {
 
   Database();
   Database.name(this.name);
+
+  UnmodifiableListView<Password> get passwordList => UnmodifiableListView(_passwordList);
 
   void addPassword(Password password) {
     _passwordList.add(password);
