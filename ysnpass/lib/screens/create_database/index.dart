@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ysnpass/model/database.dart';
 import 'package:ysnpass/model/database_list.dart';
-
-import 'view_database.dart';
+import 'package:ysnpass/screens/view_database/index.dart';
 
 class CreateDatabase extends StatefulWidget {
   @override
@@ -16,6 +15,9 @@ class CreateDatabaseState extends State<CreateDatabase> {
 
   @override
   Widget build(BuildContext context) {
+    final DatabaseList databaseList =
+        Provider.of<DatabaseList>(context, listen: false);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Create Database'),
@@ -33,8 +35,9 @@ class CreateDatabaseState extends State<CreateDatabase> {
             RaisedButton(
               onPressed: () {
                 if (_formKey.currentState.validate()) {
-                  Provider.of<DatabaseList>(context, listen: false)
-                      .add(Database(_formController.text));
+                  databaseList.addDatabase(Database.name(_formController.text));
+                  databaseList.openDatabase(_formController.text);
+
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => ViewDatabase()),

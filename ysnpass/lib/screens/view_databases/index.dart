@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ysnpass/model/database_list.dart';
-
-import 'create_database.dart';
+import 'package:ysnpass/screens/create_database/index.dart';
+import 'package:ysnpass/screens/view_database/index.dart';
 
 class ViewDatabases extends StatefulWidget {
   @override
@@ -17,13 +17,22 @@ class _ViewDatabasesState extends State<ViewDatabases> {
         title: Text('My Databases'),
       ),
       body: Consumer<DatabaseList>(
-        builder: (context, databasePool, child) => Column(
+        builder: (context, databaseList, child) => Column(
           children: <Widget>[
             Expanded(
                 child: ListView(
-              children: databasePool.databases
+              children: databaseList.databases
                   .map((database) => ListTile(
                         title: Text(database.name),
+                        trailing: Icon(Icons.chevron_right),
+                        onTap: () {
+                          databaseList.openDatabase(database.name);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ViewDatabase()),
+                          );
+                        },
                       ))
                   .toList(),
             )),

@@ -2,12 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'model/database_list.dart';
-import 'screens/view_databases.dart';
+import 'model/database.dart';
+import 'screens/view_databases/index.dart';
 
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => DatabaseList(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => DatabaseList()),
+        ChangeNotifierProxyProvider<DatabaseList, Database>(
+          create: (_) => Database(),
+          update: (_, databaseList, database) =>
+              database.load(databaseList.openedDatabase),
+        ),
+      ],
       child: YsnPass(),
     ),
   );
