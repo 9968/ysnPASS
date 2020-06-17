@@ -18,7 +18,7 @@ class _ViewDatabasesState extends State<ViewDatabases> {
       ),
       body: Consumer<DatabaseList>(
         builder: (context, databaseList, child) => Column(
-          children: <Widget>[
+          children: [
             Expanded(
                 child: ListView(
               children: databaseList.databases

@@ -17,6 +17,6 @@ class DatabaseList extends ChangeNotifier {
   void openDatabase(String name) {
     _openedDatabase =
         _databases.firstWhere((database) => database.name == name);
-        
+    notifyListeners();
   }
 }

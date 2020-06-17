@@ -20,6 +20,7 @@ class Database extends ChangeNotifier {
 
   void removePassword(PasswordEntry passwordEntry) {
     _passwordList.remove(passwordEntry);
+    notifyListeners();
   }
 
   Database load(Database database) {
