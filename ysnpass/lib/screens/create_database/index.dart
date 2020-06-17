@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:ysnpass/model/database.dart';
-import 'package:ysnpass/model/database_list.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ysnpass/screens/view_database/index.dart';
+import 'package:ysnpass/store/actions/actions.dart';
+import 'package:ysnpass/store/models/app_state.dart';
+import 'package:ysnpass/store/models/database.dart';
 
 class CreateDatabase extends StatefulWidget {
   @override
@@ -15,9 +16,6 @@ class CreateDatabaseState extends State<CreateDatabase> {
 
   @override
   Widget build(BuildContext context) {
-    final DatabaseList databaseList =
-        Provider.of<DatabaseList>(context, listen: false);
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Create Database'),
@@ -32,20 +30,27 @@ class CreateDatabaseState extends State<CreateDatabase> {
                   ? 'Please enter a name for your database'
                   : null,
             ),
-            RaisedButton(
-              onPressed: () {
-                if (_formKey.currentState.validate()) {
-                  databaseList.addDatabase(Database.name(_formController.text));
-                  databaseList.openDatabase(_formController.text);
+            StoreConnector<AppState, void Function(Database)>(
+                converter: (store) => (database) {
+                      store.dispatch(AddDatabaseAction(database));
+                      store.dispatch(OpenDatabaseAction(database));
+                    },
+                builder: (context, addCallback) {
+                  return RaisedButton(
+                    onPressed: () {
+                      if (_formKey.currentState.validate()) {
+                        addCallback(Database(name: _formController.text));
 
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => ViewDatabase()),
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ViewDatabase()),
+                        );
+                      }
+                    },
+                    child: Text('CREATE'),
                   );
-                }
-              },
-              child: Text('CREATE'),
-            ),
+                }),
           ],
         ),
       ),

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:ysnpass/model/database.dart';
-import 'package:ysnpass/model/password_entry.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:ysnpass/store/actions/actions.dart';
+import 'package:ysnpass/store/models/app_state.dart';
+import 'package:ysnpass/store/models/password_entry.dart';
 
 class CreatePassword extends StatelessWidget {
   @override
@@ -9,8 +10,6 @@ class CreatePassword extends StatelessWidget {
     final _formKey = GlobalKey<FormState>();
     final _userNameController = TextEditingController();
     final _passwordController = TextEditingController();
-
-    final database = Provider.of<Database>(context, listen: false);
 
     return Scaffold(
       appBar: AppBar(
@@ -30,16 +29,21 @@ class CreatePassword extends StatelessWidget {
               validator: (value) =>
                   value.isEmpty ? 'Please enter a password' : null,
             ),
-            RaisedButton(
-              onPressed: () {
-                if (_formKey.currentState.validate()) {
-                  database.addPassword(PasswordEntry(
-                      _userNameController.text, _passwordController.text));
-                  Navigator.pop(context);
-                }
-              },
-              child: Text('CREATE'),
-            ),
+            StoreConnector<AppState, void Function(PasswordEntry)>(
+                converter: (store) => (passwordEntry) =>
+                    store.dispatch(AddPasswordAction(passwordEntry)),
+                builder: (context, addCallback) {
+                  return RaisedButton(
+                    onPressed: () {
+                      if (_formKey.currentState.validate()) {
+                        addCallback(PasswordEntry(_userNameController.text,
+                            _passwordController.text));
+                        Navigator.pop(context);
+                      }
+                    },
+                    child: Text('CREATE'),
+                  );
+                }),
           ],
         ),
       ),
