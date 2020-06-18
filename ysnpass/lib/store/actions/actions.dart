@@ -11,9 +11,9 @@ class AddDatabaseAction {
   AddDatabaseAction(this.database);
 }
 
-class AddPasswordAction {
+class SavePasswordAction {
   final PasswordEntry passwordEntry;
-  AddPasswordAction(this.passwordEntry);
+  SavePasswordAction(this.passwordEntry);
 }
 
 class RemovePasswordAction {

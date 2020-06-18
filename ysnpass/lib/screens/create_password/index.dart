@@ -31,7 +31,7 @@ class CreatePassword extends StatelessWidget {
             ),
             StoreConnector<AppState, void Function(PasswordEntry)>(
                 converter: (store) => (passwordEntry) =>
-                    store.dispatch(AddPasswordAction(passwordEntry)),
+                    store.dispatch(SavePasswordAction(passwordEntry)),
                 builder: (context, addCallback) {
                   return RaisedButton(
                     onPressed: () {
