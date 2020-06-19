@@ -21,7 +21,7 @@ class PasswordListView extends StatelessWidget {
                 onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => ViewPasswordEntry(password),
+                    builder: (_) => ViewPasswordEntry(password.id),
                   ),
                 ),
               ),
