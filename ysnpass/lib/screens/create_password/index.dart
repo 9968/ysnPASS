@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ysnpass/screens/create_password/create_password_form_container.dart';
+
+import 'create_password_form.dart';
 
 class CreatePassword extends StatelessWidget {
   @override
@@ -8,7 +9,7 @@ class CreatePassword extends StatelessWidget {
       appBar: AppBar(
         title: Text('Create Password'),
       ),
-      body: CreatePasswordFromContainer(),
+      body: CreatePasswordForm(),
     );
   }
 }
