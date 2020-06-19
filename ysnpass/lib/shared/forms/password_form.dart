@@ -39,7 +39,7 @@ class PasswordForm extends StatelessWidget {
                 Navigator.pop(context);
               }
             },
-            child: Text('CREATE'),
+            child: Text('SAVE PASSWORD'),
           ),
         ],
       ),
