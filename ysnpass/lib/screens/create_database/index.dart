@@ -1,65 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:ysnpass/screens/view_database/index.dart';
-import 'package:ysnpass/store/actions/actions.dart';
-import 'package:ysnpass/store/models/app_state.dart';
-import 'package:ysnpass/store/models/database.dart';
+import 'package:ysnpass/screens/create_database/create_database_form_container.dart';
 
-class CreateDatabase extends StatefulWidget {
-  @override
-  createState() => CreateDatabaseState();
-}
-
-class CreateDatabaseState extends State<CreateDatabase> {
-  final _formKey = GlobalKey<FormState>();
-  final _formController = TextEditingController();
-
+class CreateDatabase extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Create Database'),
       ),
-      body: Form(
-        key: _formKey,
-        child: Column(
-          children: [
-            TextFormField(
-              controller: _formController,
-              validator: (value) => value.isEmpty
-                  ? 'Please enter a name for your database'
-                  : null,
-            ),
-            StoreConnector<AppState, void Function(Database)>(
-                converter: (store) => (database) {
-                      store.dispatch(SaveDatabaseAction(database));
-                      store.dispatch(OpenDatabaseAction(database.id));
-                    },
-                builder: (context, addCallback) {
-                  return RaisedButton(
-                    onPressed: () {
-                      if (_formKey.currentState.validate()) {
-                        addCallback(Database(name: _formController.text));
-
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ViewDatabase()),
-                        );
-                      }
-                    },
-                    child: Text('CREATE'),
-                  );
-                }),
-          ],
-        ),
-      ),
+      body: CreatedatabaseformContainer(),
     );
-  }
-
-  @override
-  void dispose() {
-    _formController.dispose();
-    super.dispose();
   }
 }
