@@ -38,7 +38,7 @@ class EditPasswordScreen extends StatelessWidget {
             ),
             StoreConnector<AppState, void Function(PasswordEntry)>(
               converter: (store) => (passwordEntry) =>
-                  store.dispatch(SavePasswordAction(passwordEntry)),
+                  store.dispatch(SavePasswordAction(passwordEntry, store.state.openedDatabaseId)),
               builder: (context, onSave) {
                 return RaisedButton(
                   onPressed: () {

@@ -4,7 +4,7 @@ import 'package:ysnpass/store/reducers/opened_database_reducer.dart';
 
 AppState appReducer(AppState state, action) {
   return AppState(
-    openedDatabase: openedDatabaseReducer(state.openedDatabase, action),
+    openedDatabaseId: openedDatabaseReducer(state.openedDatabaseId, action),
     databases: databasesReducer(state.databases, action),
   );
 }

@@ -32,8 +32,8 @@ class CreateDatabaseState extends State<CreateDatabase> {
             ),
             StoreConnector<AppState, void Function(Database)>(
                 converter: (store) => (database) {
-                      store.dispatch(AddDatabaseAction(database));
-                      store.dispatch(OpenDatabaseAction(database));
+                      store.dispatch(SaveDatabaseAction(database));
+                      store.dispatch(OpenDatabaseAction(database.id));
                     },
                 builder: (context, addCallback) {
                   return RaisedButton(

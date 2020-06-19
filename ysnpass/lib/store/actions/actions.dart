@@ -2,21 +2,23 @@ import 'package:ysnpass/store/models/database.dart';
 import 'package:ysnpass/store/models/password_entry.dart';
 
 class OpenDatabaseAction {
-  final Database database;
-  OpenDatabaseAction(this.database);
+  final String databaseId;
+  OpenDatabaseAction(this.databaseId);
 }
 
-class AddDatabaseAction {
+class SaveDatabaseAction {
   final Database database;
-  AddDatabaseAction(this.database);
+  SaveDatabaseAction(this.database);
 }
 
 class SavePasswordAction {
   final PasswordEntry passwordEntry;
-  SavePasswordAction(this.passwordEntry);
+  final String databaseId;
+  SavePasswordAction(this.passwordEntry, this.databaseId);
 }
 
 class RemovePasswordAction {
   final String id;
-  RemovePasswordAction(this.id);
+  final String databaseId;
+  RemovePasswordAction(this.id, this.databaseId);
 }

@@ -15,8 +15,8 @@ class ViewPasswordEntry extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, Function>(
-        converter: (store) =>
-            () => store.dispatch(RemovePasswordAction(passwordEntry.id)),
+        converter: (store) => () => store.dispatch(RemovePasswordAction(
+            passwordEntry.id, store.state.openedDatabaseId)),
         builder: (context, deleteCallback) {
           return Scaffold(
             appBar: AppBar(

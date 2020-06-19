@@ -1,35 +1,11 @@
 import 'package:redux/redux.dart';
 import 'package:ysnpass/store/actions/actions.dart';
-import 'package:ysnpass/store/models/database.dart';
-import 'package:ysnpass/store/models/password_entry.dart';
 
-final openedDatabaseReducer = combineReducers<Database>([
-  TypedReducer<Database, OpenDatabaseAction>(_openDatabase),
-  TypedReducer<Database, SavePasswordAction>(_savePassword),
-  TypedReducer<Database, RemovePasswordAction>(_removePassword),
+final openedDatabaseReducer = combineReducers<String>([
+  TypedReducer<String, OpenDatabaseAction>(_openDatabase),
 ]);
 
-Database _openDatabase(Database database, OpenDatabaseAction action) {
-  return action.database;
+String _openDatabase(String databaseId, OpenDatabaseAction action) {
+  return action.databaseId;
 }
 
-Database _savePassword(Database database, SavePasswordAction action) {
-  final List<PasswordEntry> passwordList = List.from(database.passwordEntries);
-  final index = passwordList.indexWhere(
-      (passwordEntry) => passwordEntry.id == action.passwordEntry.id);
-
-  if (index >= 0) {
-    passwordList[index] = action.passwordEntry;
-  } else {
-    passwordList.add(action.passwordEntry);
-  }
-
-  return Database(name: database.name, passwordEntries: passwordList);
-}
-
-Database _removePassword(Database database, RemovePasswordAction action) {
-  return Database(
-      name: database.name,
-      passwordEntries: List.from(database.passwordEntries)
-        ..removeWhere((PasswordEntry password) => password.id == action.id));
-}

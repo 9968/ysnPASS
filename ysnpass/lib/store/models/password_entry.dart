@@ -7,6 +7,6 @@ class PasswordEntry {
   final String username;
   final String password;
 
-  PasswordEntry(this.username, this.password, {String id}):
-  id = id ?? Uuid().v4();
+  PasswordEntry(this.username, this.password, {String id})
+      : id = id ?? Uuid().v4();
 }
