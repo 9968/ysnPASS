@@ -33,9 +33,11 @@ class PasswordForm extends StatelessWidget {
           RaisedButton(
             onPressed: () {
               if (_formKey.currentState.validate()) {
-                onSubmit(PasswordEntry(
-                    _userNameController.text, _passwordController.text,
-                    id: passwordEntry?.id));
+                onSubmit(
+                  PasswordEntry(
+                      _userNameController.text, _passwordController.text,
+                      id: passwordEntry?.id),
+                );
                 Navigator.pop(context);
               }
             },
