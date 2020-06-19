@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ysnpass/screens/create_database/create_database_button.dart';
 import 'package:ysnpass/screens/view_database/index.dart';
 import 'package:ysnpass/store/models/database.dart';
 
@@ -11,6 +12,13 @@ class CreateDatabaseForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final onClick = () {
+      onCreate(Database(name: _formController.text));
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => ViewDatabase()),
+      );
+    };
     return Form(
       key: _formKey,
       child: Column(
@@ -20,18 +28,8 @@ class CreateDatabaseForm extends StatelessWidget {
             validator: (value) =>
                 value.isEmpty ? 'Please enter a name for your database' : null,
           ),
-          RaisedButton(
-            onPressed: () {
-              if (_formKey.currentState.validate()) {
-                onCreate(Database(name: _formController.text));
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => ViewDatabase()),
-                );
-              }
-            },
-            child: Text('CREATE'),
-          ),
+          CreateDatabaseButton(
+              validate: () => _formKey.currentState.validate(), onClick: onClick)
         ],
       ),
     );
