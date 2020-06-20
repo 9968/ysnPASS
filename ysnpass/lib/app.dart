@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:ysnpass/screens/view_databases/index.dart';
+import 'package:ysnpass/store/actions/actions.dart';
 import 'package:ysnpass/store/models/app_state.dart';
 
 class YsnPassApp extends StatelessWidget {
@@ -20,7 +21,8 @@ class YsnPassApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: ViewDatabases(),
+        home: ViewDatabases(
+            onInit: () => store.dispatch(LoadDatabaseNamesAction())),
       ),
     );
   }

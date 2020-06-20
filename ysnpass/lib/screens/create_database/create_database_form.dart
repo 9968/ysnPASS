@@ -14,10 +14,6 @@ class CreateDatabaseForm extends StatelessWidget {
   Widget build(BuildContext context) {
     final onClick = () {
       onCreate(Database(name: _formController.text));
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => ViewDatabase()),
-      );
     };
     return Form(
       key: _formKey,
@@ -29,7 +25,8 @@ class CreateDatabaseForm extends StatelessWidget {
                 value.isEmpty ? 'Please enter a name for your database' : null,
           ),
           CreateDatabaseButton(
-              validate: () => _formKey.currentState.validate(), onClick: onClick)
+              validate: () => _formKey.currentState.validate(),
+              onClick: onClick)
         ],
       ),
     );

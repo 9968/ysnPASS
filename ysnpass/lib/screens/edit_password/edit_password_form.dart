@@ -13,8 +13,8 @@ class EditPasswordForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, void Function(PasswordEntry)>(
-        converter: (store) => (passwordEntry) => store.dispatch(
-            SavePasswordAction(passwordEntry, store.state.openedDatabaseId)),
+        converter: (store) => (passwordEntry) =>
+            store.dispatch(SavePasswordAction(passwordEntry)),
         builder: (context, onSave) {
           return PasswordForm(
             onSubmit: onSave,

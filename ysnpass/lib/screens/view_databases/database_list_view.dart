@@ -3,14 +3,13 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ysnpass/screens/view_database/index.dart';
 import 'package:ysnpass/store/actions/actions.dart';
 import 'package:ysnpass/store/models/app_state.dart';
-import 'package:ysnpass/store/models/database.dart';
 import 'package:ysnpass/store/selectors/selectors.dart';
 
 class DatabaseListViewModel {
-  final List<Database> databaseList;
-  final Function openDatabase;
+  final List<String> databaseList;
+  final Function loadDatabase;
 
-  DatabaseListViewModel(this.databaseList, this.openDatabase);
+  DatabaseListViewModel(this.databaseList, this.loadDatabase);
 }
 
 class DatabaseListView extends StatelessWidget {
@@ -19,18 +18,18 @@ class DatabaseListView extends StatelessWidget {
     return StoreConnector<AppState, DatabaseListViewModel>(
         converter: (store) => DatabaseListViewModel(
               databasesSelector(store.state),
-              (databaseId) => store.dispatch(
-                OpenDatabaseAction(databaseId),
+              (databaseName) => store.dispatch(
+                LoadDatabaseAction(databaseName),
               ),
             ),
         builder: (context, databaseListViewModel) {
           return ListView(
               children: databaseListViewModel.databaseList
                   .map((database) => ListTile(
-                        title: Text(database.name),
+                        title: Text(database),
                         trailing: Icon(Icons.chevron_right),
                         onTap: () {
-                          databaseListViewModel.openDatabase(database.id);
+                          databaseListViewModel.loadDatabase(database);
                           Navigator.push(
                             context,
                             MaterialPageRoute(

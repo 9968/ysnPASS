@@ -1,11 +1,10 @@
 import 'package:redux/redux.dart';
 import 'package:ysnpass/store/actions/actions.dart';
 
-final openedDatabaseReducer = combineReducers<String>([
-  TypedReducer<String, OpenDatabaseAction>(_openDatabase),
+final openedDatabasePathReducer = combineReducers<String>([
+  TypedReducer<String, LoadDatabaseAction>(_openDatabase),
 ]);
 
-String _openDatabase(String databaseId, OpenDatabaseAction action) {
-  return action.databaseId;
+String _openDatabase(String databasePath, LoadDatabaseAction action) {
+  return action.databaseName;
 }
-

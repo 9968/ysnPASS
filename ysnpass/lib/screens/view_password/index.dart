@@ -18,7 +18,7 @@ class ViewPasswordContainer extends StatelessWidget {
               passwordEntriesSelector(store.state)
                   .firstWhere((password) => password.id == passwordId),
               () => store.dispatch(
-                RemovePasswordAction(passwordId, store.state.openedDatabaseId),
+                RemovePasswordAction(passwordId),
               ),
             ),
         builder: (context, viewPasswordEntryModel) {

@@ -21,11 +21,13 @@ class PasswordForm extends StatelessWidget {
       child: Column(
         children: [
           TextFormField(
+            key: Key('username'),
             controller: _userNameController,
             validator: (value) =>
                 value.isEmpty ? 'Please enter an username' : null,
           ),
           TextFormField(
+            key: Key('password'),
             controller: _passwordController,
             validator: (value) =>
                 value.isEmpty ? 'Please enter a password' : null,
