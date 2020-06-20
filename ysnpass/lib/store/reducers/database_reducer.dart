@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
 import 'package:ysnpass/store/actions/actions.dart';
 import 'package:ysnpass/store/models/database.dart';
@@ -34,17 +33,3 @@ Database _removePassword(Database database, RemovePasswordAction action) {
       ..removeWhere((PasswordEntry password) => password.id == action.id),
   );
 }
-
-// List<Database> _saveDatabase(
-//     List<Database> databases, SaveDatabaseAction action) {
-//   final List<Database> databaseList = List.from(databases);
-//   final index =
-//       databaseList.indexWhere((database) => database.id == action.database.id);
-
-//   if (index >= 0) {
-//     databaseList[index] = action.database;
-//   } else {
-//     databaseList.add(action.database);
-//   }
-//   return databaseList;
-// }

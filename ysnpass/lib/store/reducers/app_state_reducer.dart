@@ -1,5 +1,5 @@
 import 'package:ysnpass/store/models/app_state.dart';
-import 'package:ysnpass/store/reducers/database_paths_reducer.dart';
+import 'package:ysnpass/store/reducers/database_names_reducer.dart';
 import 'package:ysnpass/store/reducers/database_reducer.dart';
 import 'package:ysnpass/store/reducers/opened_database_reducer.dart';
 
