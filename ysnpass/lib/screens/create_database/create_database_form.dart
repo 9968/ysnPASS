@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ysnpass/screens/create_database/create_database_button.dart';
-import 'package:ysnpass/screens/view_database/index.dart';
 import 'package:ysnpass/store/models/database.dart';
 
 class CreateDatabaseForm extends StatelessWidget {

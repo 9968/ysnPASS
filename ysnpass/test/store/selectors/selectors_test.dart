@@ -7,13 +7,16 @@ import 'package:ysnpass/store/selectors/selectors.dart';
 void main() {
   final mockPasswordEntries = [PasswordEntry('username', 'password')];
   final mockSelectedDatabase =
-      Database(id: '1234', passwordEntries: mockPasswordEntries);
-  final mockDatabases = [Database(), mockSelectedDatabase, Database()];
-  final mockAppState =
-      AppState(databases: mockDatabases, openedDatabaseId: '1234');
+      Database(name: '1234', passwordEntries: mockPasswordEntries);
+  final mockDatabaseNames = ['0', '1', '1234'];
+
+  final mockAppState = AppState(
+      databaseNames: mockDatabaseNames,
+      loadedDatabase: mockSelectedDatabase,
+      openedDatabaseName: '1234');
   group('Selectors', () {
     test('should select databases', () {
-      expect(databasesSelector(mockAppState), mockDatabases);
+      expect(databasesSelector(mockAppState), mockDatabaseNames);
     });
     test('should select open database', () {
       expect(openedDatabaseSelector(mockAppState), mockSelectedDatabase);
