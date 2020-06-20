@@ -3,58 +3,58 @@ import 'dart:io';
 
 import 'package:path_provider/path_provider.dart';
 import 'package:redux/redux.dart';
+import 'package:ysnpass/filesystem/database_filesystem.dart';
 import 'package:ysnpass/store/actions/actions.dart';
 import 'package:ysnpass/store/models/app_state.dart';
 import 'package:ysnpass/store/models/database.dart';
 import 'package:ysnpass/store/selectors/selectors.dart';
 
-List<Middleware<AppState>> createDatabaseMiddleware() {
+List<Middleware<AppState>> createDatabaseMiddleware(
+    DatabaseFileSystem databaseFileSystem) {
+  final loadDatabaseNames = _createLoadDatabaseNames(databaseFileSystem);
+  final loadDatabase = _createLoadDatabase(databaseFileSystem);
+  final saveDatabase = _createSaveDatabase(databaseFileSystem);
   return [
-    TypedMiddleware<AppState, LoadDatabaseNamesAction>(_loadDatabaseNames),
-    TypedMiddleware<AppState, LoadDatabaseAction>(_loadDatabase),
-    TypedMiddleware<AppState, SaveDatabaseAction>(_saveDatabase),
-    TypedMiddleware<AppState, SavePasswordAction>(_saveDatabase),
-    TypedMiddleware<AppState, RemovePasswordAction>(_saveDatabase),
+    TypedMiddleware<AppState, LoadDatabaseNamesAction>(loadDatabaseNames),
+    TypedMiddleware<AppState, LoadDatabaseAction>(loadDatabase),
+    TypedMiddleware<AppState, SaveDatabaseAction>(saveDatabase),
+    TypedMiddleware<AppState, SavePasswordAction>(saveDatabase),
+    TypedMiddleware<AppState, RemovePasswordAction>(saveDatabase),
   ];
 }
 
-void _loadDatabaseNames(
-    Store<AppState> store, action, NextDispatcher next) async {
-  next(action);
+Middleware<AppState> _createLoadDatabaseNames(
+    DatabaseFileSystem databaseFileSystem) {
+  return (Store<AppState> store, action, NextDispatcher next) async {
+    next(action);
 
-  final directory = await getApplicationDocumentsDirectory();
-  store.dispatch(
-    DatabaseNamesLoadedAction(
-      directory
-          .listSync()
-          .where(
-            (file) => file.path.endsWith('.ysndb'),
-          )
-          .map((file) => file.path.substring(
-              file.path.lastIndexOf('/') + 1, file.path.lastIndexOf('.')))
-          .toList(),
-    ),
-  );
+    store.dispatch(
+      DatabaseNamesLoadedAction(
+        await databaseFileSystem.getDatabaseNames(),
+      ),
+    );
+  };
 }
 
-void _loadDatabase(Store<AppState> store, action, NextDispatcher next) async {
-  next(action);
+Middleware<AppState> _createLoadDatabase(
+    DatabaseFileSystem databaseFileSystem) {
+  return (Store<AppState> store, action, NextDispatcher next) async {
+    next(action);
 
-  final directory = await getApplicationDocumentsDirectory();
-  final databasePath = '${directory.path}/${action.databaseName}.ysndb';
-  final database = Database.fromJson(
-    jsonDecode(
-      File(databasePath).readAsStringSync(),
-    ),
-  );
-  store.dispatch(DatabaseLoadedAction(database));
+    store.dispatch(
+      DatabaseLoadedAction(
+        await databaseFileSystem.openDatabase(action.databaseName),
+      ),
+    );
+  };
 }
 
-void _saveDatabase(Store<AppState> store, action, NextDispatcher next) async {
-  next(action);
-  final openDatabase = openedDatabaseSelector(store.state);
+Middleware<AppState> _createSaveDatabase(
+    DatabaseFileSystem databaseFileSystem) {
+  return (Store<AppState> store, action, NextDispatcher next) async {
+    next(action);
+    final openDatabase = openedDatabaseSelector(store.state);
 
-  final directory = await getApplicationDocumentsDirectory();
-  final filePath = '${directory.path}/${openDatabase.name}.ysndb';
-  File(filePath).writeAsStringSync(jsonEncode(openDatabase));
+    databaseFileSystem.saveDatabase(openDatabase);
+  };
 }
