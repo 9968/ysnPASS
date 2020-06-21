@@ -14,6 +14,11 @@ class CreateDatabaseAction {
   CreateDatabaseAction(this.database);
 }
 
+class DatabaseCreatedAction {
+  final String databaseName;
+  DatabaseCreatedAction(this.databaseName);
+}
+
 class LoadDatabaseAction {
   final String databaseName;
   LoadDatabaseAction(this.databaseName);

@@ -38,8 +38,9 @@ Middleware<AppState> _createLoadDatabaseNames(
 Middleware<AppState> _createCreateDatabase(
     DatabaseFileSystem databaseFileSystem) {
   return (Store<AppState> store, action, NextDispatcher next) async {
-    await databaseFileSystem.saveDatabase(action.database);
     next(action);
+    await databaseFileSystem.saveDatabase(action.database);
+    store.dispatch(DatabaseCreatedAction(action.database.name));
     store.dispatch(LoadDatabaseAction(action.database.name));
   };
 }

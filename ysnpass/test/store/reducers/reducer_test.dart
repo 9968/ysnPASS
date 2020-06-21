@@ -22,9 +22,21 @@ void main() {
       expect(openedDatabaseSelector(store.state), newDatabase);
       expect(store.state.openedDatabaseName, 'new');
     });
-   test('should remove database from list on RemoveDatabaseAction', () {
-      final store = Store<AppState>(appReducer,
-          initialState: AppState(databaseNames: ['name1', 'name2']));
+    test('should add database to list on DatabaseCreatedAction', () {
+      final store = Store<AppState>(
+        appReducer,
+        initialState: AppState(),
+      );
+
+      store.dispatch(DatabaseCreatedAction('name'));
+
+      expect(databasesSelector(store.state), ['name']);
+    });
+    test('should remove database from list on RemoveDatabaseAction', () {
+      final store = Store<AppState>(
+        appReducer,
+        initialState: AppState(databaseNames: ['name1', 'name2']),
+      );
 
       store.dispatch(
         RemoveDatabaseAction('name2'),

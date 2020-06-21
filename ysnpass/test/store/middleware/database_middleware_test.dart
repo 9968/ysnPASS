@@ -22,8 +22,6 @@ void main() {
       mockDatabaseFileSystem = MockDatabaseFileSystem();
       when(mockDatabaseFileSystem.openDatabase(any))
           .thenAnswer((_) async => database);
-      when(mockDatabaseFileSystem.saveDatabase(any))
-          .thenAnswer((realInvocation) => null);
       store = Store<AppState>(
         appReducer,
         initialState: AppState(loadedDatabase: database),
