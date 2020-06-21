@@ -8,6 +8,12 @@ class DatabaseNamesLoadedAction {
   DatabaseNamesLoadedAction(this.databaseNames);
 }
 
+class CreateDatabaseAction {
+  final Database database;
+
+  CreateDatabaseAction(this.database);
+}
+
 class LoadDatabaseAction {
   final String databaseName;
   LoadDatabaseAction(this.databaseName);
@@ -18,10 +24,7 @@ class DatabaseLoadedAction {
   DatabaseLoadedAction(this.database);
 }
 
-class SaveDatabaseAction {
-  final Database database;
-  SaveDatabaseAction(this.database);
-}
+class SaveDatabaseAction {}
 
 class RemoveDatabaseAction {
   final String databaseName;

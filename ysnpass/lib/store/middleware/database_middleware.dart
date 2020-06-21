@@ -8,10 +8,12 @@ List<Middleware<AppState>> createDatabaseMiddleware(
     DatabaseFileSystem databaseFileSystem) {
   final loadDatabaseNames = _createLoadDatabaseNames(databaseFileSystem);
   final loadDatabase = _createLoadDatabase(databaseFileSystem);
+  final createDatabase = _createCreateDatabase(databaseFileSystem);
   final saveDatabase = _createSaveDatabase(databaseFileSystem);
   final removeDatabase = _createRemoveDatabase(databaseFileSystem);
   return [
     TypedMiddleware<AppState, LoadDatabaseNamesAction>(loadDatabaseNames),
+    TypedMiddleware<AppState, CreateDatabaseAction>(createDatabase),
     TypedMiddleware<AppState, LoadDatabaseAction>(loadDatabase),
     TypedMiddleware<AppState, RemoveDatabaseAction>(removeDatabase),
     TypedMiddleware<AppState, SaveDatabaseAction>(saveDatabase),
@@ -33,6 +35,15 @@ Middleware<AppState> _createLoadDatabaseNames(
   };
 }
 
+Middleware<AppState> _createCreateDatabase(
+    DatabaseFileSystem databaseFileSystem) {
+  return (Store<AppState> store, action, NextDispatcher next) async {
+    await databaseFileSystem.saveDatabase(action.database);
+    next(action);
+    store.dispatch(LoadDatabaseAction(action.database.name));
+  };
+}
+
 Middleware<AppState> _createLoadDatabase(
     DatabaseFileSystem databaseFileSystem) {
   return (Store<AppState> store, action, NextDispatcher next) async {
@@ -50,8 +61,7 @@ Middleware<AppState> _createSaveDatabase(
     DatabaseFileSystem databaseFileSystem) {
   return (Store<AppState> store, action, NextDispatcher next) async {
     next(action);
-    // when saving a new database there is none opened yet
-    final openDatabase = openedDatabaseSelector(store.state) ?? action.database;
+    final openDatabase = openedDatabaseSelector(store.state);
 
     await databaseFileSystem.saveDatabase(openDatabase);
   };

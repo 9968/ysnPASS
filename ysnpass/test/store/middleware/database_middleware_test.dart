@@ -20,6 +20,10 @@ void main() {
   group('Database Middleware', () {
     setUp(() {
       mockDatabaseFileSystem = MockDatabaseFileSystem();
+      when(mockDatabaseFileSystem.openDatabase(any))
+          .thenAnswer((_) async => database);
+      when(mockDatabaseFileSystem.saveDatabase(any))
+          .thenAnswer((realInvocation) => null);
       store = Store<AppState>(
         appReducer,
         initialState: AppState(loadedDatabase: database),
@@ -32,13 +36,13 @@ void main() {
       verify(mockDatabaseFileSystem.getDatabaseNames());
     });
     test('should save database on every state changing action', () {
-      store.dispatch(SaveDatabaseAction(database));
+      store.dispatch(SaveDatabaseAction());
+      store.dispatch(CreateDatabaseAction(database));
       store.dispatch(SavePasswordAction(password));
       store.dispatch(RemovePasswordAction('id'));
 
-      verify(mockDatabaseFileSystem.saveDatabase(any)).called(3);
+      verify(mockDatabaseFileSystem.saveDatabase(any)).called(4);
     });
-
     test('should remove database on RemoveDatabaseAction', () {
       store.dispatch(RemoveDatabaseAction(database.name));
 

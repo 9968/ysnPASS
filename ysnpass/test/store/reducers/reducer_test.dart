@@ -22,7 +22,7 @@ void main() {
       expect(openedDatabaseSelector(store.state), newDatabase);
       expect(store.state.openedDatabaseName, 'new');
     });
-    test('should remove database from list on RemoveDatabaseAction', () {
+   test('should remove database from list on RemoveDatabaseAction', () {
       final store = Store<AppState>(appReducer,
           initialState: AppState(databaseNames: ['name1', 'name2']));
 
