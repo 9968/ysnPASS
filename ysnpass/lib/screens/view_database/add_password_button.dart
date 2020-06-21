@@ -12,7 +12,7 @@ class AddPasswordButton extends StatelessWidget {
       backgroundColor: Colors.blue,
       onPressed: () => Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => CreatePassword()),
+        MaterialPageRoute(builder: (_) => CreatePassword()),
       ),
     );
   }
