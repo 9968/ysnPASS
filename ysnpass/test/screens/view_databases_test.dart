@@ -15,6 +15,10 @@ void main() {
   setUpAll(() {
     store = mockStore(AppState(databaseNames: ['name1', 'name2']));
   });
+
+  setUp(() {
+    reset(navigator);
+  });
   testWidgets('should show list of databases', (WidgetTester tester) async {
     await tester.pumpWidget(
       testApp(
@@ -46,5 +50,44 @@ void main() {
 
     verify(navigator.didPush(any, any));
     verify(store.dispatch(argThat(isA<LoadDatabaseAction>())));
+  });
+
+  testWidgets(
+      'should navigate to create database form when create button is clicked',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(
+      testApp(
+        mockStore: store,
+        mockNavigatorObserver: navigator,
+        testScreen: ViewDatabases(onInit: () => null),
+      ),
+    );
+    final button = find.text('CREATE DATABASE');
+    await tester.tap(button);
+
+    verify(navigator.didPush(any, any));
+  });
+
+  testWidgets('should delete database when delete icon is clicked',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(
+      testApp(
+        mockStore: store,
+        mockNavigatorObserver: navigator,
+        testScreen: ViewDatabases(onInit: () => null),
+      ),
+    );
+
+    final button = find.byType(IconButton).at(0);
+    await tester.tap(button);
+
+    verify(
+      store.dispatch(
+        argThat(
+          predicate<RemoveDatabaseAction>(
+              (action) => action.databaseName == 'name1'),
+        ),
+      ),
+    );
   });
 }

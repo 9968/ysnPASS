@@ -33,10 +33,11 @@ class DatabaseListView extends StatelessWidget {
                   .map((databaseName) => ListTile(
                         title: Text(databaseName),
                         trailing: IconButton(
-                          icon: Icon(Icons.delete),
-                          onPressed: () => databaseListViewModel
-                              .removeDatabase(databaseName),
-                        ),
+                            icon: Icon(Icons.delete),
+                            onPressed: () {
+                              databaseListViewModel
+                                  .removeDatabase(databaseName);
+                            }),
                         onTap: () {
                           databaseListViewModel.loadDatabase(databaseName);
                           Navigator.push(
