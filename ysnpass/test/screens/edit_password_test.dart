@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:ysnpass/screens/create_password/index.dart';
+import 'package:ysnpass/screens/edit_password/index.dart';
 import 'package:ysnpass/store/actions/actions.dart';
 import 'package:ysnpass/store/models/app_state.dart';
+import 'package:ysnpass/store/models/password_entry.dart';
 
 import '../_test_utils/utils.dart';
 
@@ -17,25 +18,23 @@ void main() {
   });
 
   testWidgets(
-      'should show form, dispatch SavePasswordAction with filled values and go back to previous screen',
+      'should show form, dispatch SavePasswordAction with changed values and go back to previous screen',
       (WidgetTester tester) async {
     await tester.pumpWidget(
       testApp(
         mockNavigatorObserver: navigator,
         mockStore: store,
-        testScreen: CreatePassword(),
+        testScreen: EditPasswordScreen(
+          passwordEntry: PasswordEntry('username', 'password', id: '1234'),
+        ),
       ),
     );
-    expect(find.text('username'), findsNothing);
-    expect(find.text('password'), findsNothing);
-
-    final username = find.byKey(Key('username'));
-    await tester.showKeyboard(username);
-    await tester.enterText(username, 'username');
+    expect(find.text('username'), findsOneWidget);
+    expect(find.text('password'), findsOneWidget);
 
     final password = find.byKey(Key('password'));
     await tester.showKeyboard(password);
-    await tester.enterText(password, 'password');
+    await tester.enterText(password, 'changed');
 
     await tester.tap(find.byType(RaisedButton));
 
@@ -45,7 +44,8 @@ void main() {
           predicate<SavePasswordAction>(
             (action) =>
                 action.passwordEntry.username == 'username' &&
-                action.passwordEntry.password == 'password',
+                action.passwordEntry.password == 'changed' &&
+                action.passwordEntry.id == '1234',
           ),
         ),
       ),
