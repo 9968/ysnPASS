@@ -36,7 +36,7 @@ class DatabaseFileSystem {
 
   removeDatabase(String databaseName) async {
     final file = await _databaseFile(databaseName);
-    file.delete();
+    return file.delete();
   }
 
   Future<Directory> get _directory {
