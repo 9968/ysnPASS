@@ -34,7 +34,17 @@ class DatabaseFileSystem {
     return File(filePath).writeAsString(jsonEncode(database));
   }
 
+  removeDatabase(String databaseName) async {
+    final file = await _databaseFile(databaseName);
+    file.delete();
+  }
+
   Future<Directory> get _directory {
     return getApplicationDocumentsDirectory();
+  }
+
+  Future<File> _databaseFile(String databaseName) async {
+    final directory = await _directory;
+    return File('${directory.path}/$databaseName.ysndb');
   }
 }

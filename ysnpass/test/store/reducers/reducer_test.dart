@@ -22,6 +22,16 @@ void main() {
       expect(openedDatabaseSelector(store.state), newDatabase);
       expect(store.state.openedDatabaseName, 'new');
     });
+    test('should remove database from list on RemoveDatabaseAction', () {
+      final store = Store<AppState>(appReducer,
+          initialState: AppState(databaseNames: ['name1', 'name2']));
+
+      store.dispatch(
+        RemoveDatabaseAction('name2'),
+      );
+
+      expect(databasesSelector(store.state), ['name1']);
+    });
     test('should add password to the list on SavePasswordAction', () {
       final emptyDatabase = Database(name: '1234');
       final newPassword = PasswordEntry('username', 'password');

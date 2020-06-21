@@ -8,8 +8,10 @@ import 'package:ysnpass/store/selectors/selectors.dart';
 class DatabaseListViewModel {
   final List<String> databaseList;
   final Function loadDatabase;
+  final Function removeDatabase;
 
-  DatabaseListViewModel(this.databaseList, this.loadDatabase);
+  DatabaseListViewModel(
+      this.databaseList, this.loadDatabase, this.removeDatabase);
 }
 
 class DatabaseListView extends StatelessWidget {
@@ -21,15 +23,22 @@ class DatabaseListView extends StatelessWidget {
               (databaseName) => store.dispatch(
                 LoadDatabaseAction(databaseName),
               ),
+              (databaseName) => store.dispatch(
+                RemoveDatabaseAction(databaseName),
+              ),
             ),
         builder: (context, databaseListViewModel) {
           return ListView(
               children: databaseListViewModel.databaseList
-                  .map((database) => ListTile(
-                        title: Text(database),
-                        trailing: Icon(Icons.chevron_right),
+                  .map((databaseName) => ListTile(
+                        title: Text(databaseName),
+                        trailing: IconButton(
+                          icon: Icon(Icons.delete),
+                          onPressed: () => databaseListViewModel
+                              .removeDatabase(databaseName),
+                        ),
                         onTap: () {
-                          databaseListViewModel.loadDatabase(database);
+                          databaseListViewModel.loadDatabase(databaseName);
                           Navigator.push(
                             context,
                             MaterialPageRoute(

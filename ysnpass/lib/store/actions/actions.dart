@@ -23,6 +23,11 @@ class SaveDatabaseAction {
   SaveDatabaseAction(this.database);
 }
 
+class RemoveDatabaseAction {
+  final String databaseName;
+  RemoveDatabaseAction(this.databaseName);
+}
+
 class SavePasswordAction {
   final PasswordEntry passwordEntry;
   SavePasswordAction(this.passwordEntry);

@@ -38,5 +38,11 @@ void main() {
 
       verify(mockDatabaseFileSystem.saveDatabase(any)).called(3);
     });
+
+    test('should remove database on RemoveDatabaseAction', () {
+      store.dispatch(RemoveDatabaseAction(database.name));
+
+      verify(mockDatabaseFileSystem.removeDatabase('database'));
+    });
   });
 }

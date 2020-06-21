@@ -12,7 +12,6 @@ class CreatedatabaseformContainer extends StatelessWidget {
     return StoreConnector<AppState, void Function(Database)>(
         converter: (store) => (database) {
               store.dispatch(SaveDatabaseAction(database));
-              store.dispatch(LoadDatabaseAction(database.name));
             },
         builder: (context, onCreate) {
           return CreateDatabaseForm(onCreate: onCreate);
