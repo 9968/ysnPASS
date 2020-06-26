@@ -10,9 +10,9 @@ import 'create_database_form.dart';
 class CreatedatabaseformContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, void Function(Database)>(
-        converter: (store) => (database) {
-              store.dispatch(CreateDatabaseAction(database));
+    return StoreConnector<AppState, void Function(Database, String)>(
+        converter: (store) => (database, masterPassword) {
+              store.dispatch(CreateDatabaseAction(database, masterPassword));
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(

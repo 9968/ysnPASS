@@ -5,6 +5,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:ysnpass/filesystem/database_filesystem.dart';
 import 'package:ysnpass/store/models/database.dart';
 
+// THESE TESTS NEED TO BE RUN TOGETHER -> TEST 2 DEPENDS ON OUTPUT OF TEST 1
+// This also tests Encryption methods -> not so nice
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   final DatabaseFileSystem fileSystem = DatabaseFileSystem();
@@ -28,14 +30,22 @@ void main() {
   });
   group('Database Filesystem', () {
     test('should save database', () async {
-      final file = await fileSystem.saveDatabase(mockDatabase);
+      final file =
+          await fileSystem.saveDatabase(mockDatabase, 'masterpassword');
 
       expect(file, isNotNull);
       expect(directory.listSync().length, 1);
     });
 
+    test('should get database name', () async {
+      List<String> databaseNames = await fileSystem.getDatabaseNames();
+
+      expect(databaseNames, [endsWith(mockDatabase.name)]);
+    });
+
     test('should read database file', () async {
-      final database = await fileSystem.openDatabase('database');
+      final database =
+          await fileSystem.openDatabase('database', 'masterpassword');
 
       expect(database.name, mockDatabase.name);
     });

@@ -7,18 +7,18 @@ import 'package:ysnpass/store/models/app_state.dart';
 
 import '../_test_utils/utils.dart';
 
+// this doesn't test navigate to database if unlock is successful
+// or don't navigate if unlock not successful
 void main() {
   final MockNavigatorObserver navigator = MockNavigatorObserver();
 
   var store;
 
   setUpAll(() {
-    store = mockStore(AppState(databaseNames: ['name1', 'name2']));
+    store = mockStore(
+        AppState(databaseNames: ['name1', 'name2'], databaseLocked: true));
   });
 
-  setUp(() {
-    reset(navigator);
-  });
   testWidgets('should show list of databases', (WidgetTester tester) async {
     await tester.pumpWidget(
       testApp(
@@ -36,7 +36,7 @@ void main() {
     expect(secondTile, findsOneWidget);
   });
 
-  testWidgets('should navigate and load database when list tile is clicked',
+  testWidgets('should show password dialog and dispatch load database action',
       (WidgetTester tester) async {
     await tester.pumpWidget(
       testApp(
@@ -47,9 +47,20 @@ void main() {
     );
 
     await tester.tap(find.byType(ListTile).at(0));
+    await tester.pump();
+    final passwordField = find.byType(TextFormField);
+    await tester.showKeyboard(passwordField);
+    await tester.enterText(passwordField, 'password');
+    await tester.tap(find.byType(FlatButton));
 
     verify(navigator.didPush(any, any));
-    verify(store.dispatch(argThat(isA<LoadDatabaseAction>())));
+    verify(
+      store.dispatch(
+        predicate<LoadDatabaseAction>((action) =>
+            action.databaseName == 'name1' &&
+            action.masterPassword == 'password'),
+      ),
+    );
   });
 
   testWidgets(
@@ -62,6 +73,7 @@ void main() {
         testScreen: ViewDatabases(onInit: () => null),
       ),
     );
+    reset(navigator);
     final button = find.text('CREATE DATABASE');
     await tester.tap(button);
 

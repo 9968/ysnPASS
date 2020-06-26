@@ -17,32 +17,10 @@ void main() {
         initialState: AppState(),
       );
 
-      store.dispatch(DatabaseLoadedAction(newDatabase));
+      store.dispatch(DatabaseLoadedAction(newDatabase, 'masterpass'));
 
       expect(openedDatabaseSelector(store.state), newDatabase);
       expect(store.state.openedDatabaseName, 'new');
-    });
-    test('should add database to list on DatabaseCreatedAction', () {
-      final store = Store<AppState>(
-        appReducer,
-        initialState: AppState(),
-      );
-
-      store.dispatch(DatabaseCreatedAction('name'));
-
-      expect(databasesSelector(store.state), ['name']);
-    });
-    test('should remove database from list on RemoveDatabaseAction', () {
-      final store = Store<AppState>(
-        appReducer,
-        initialState: AppState(databaseNames: ['name1', 'name2']),
-      );
-
-      store.dispatch(
-        RemoveDatabaseAction('name2'),
-      );
-
-      expect(databasesSelector(store.state), ['name1']);
     });
     test('should add password to the list on SavePasswordAction', () {
       final emptyDatabase = Database(name: '1234');
@@ -88,6 +66,102 @@ void main() {
       );
 
       expect(passwordEntriesSelector(store.state), []);
+    });
+  });
+  group('Database Names Reducer', () {
+    test('should add database to list on DatabaseCreatedAction', () {
+      final store = Store<AppState>(
+        appReducer,
+        initialState: AppState(),
+      );
+
+      store.dispatch(DatabaseCreatedAction('name'));
+
+      expect(databasesSelector(store.state), ['name']);
+    });
+    test('should remove database from list on RemoveDatabaseAction', () {
+      final store = Store<AppState>(
+        appReducer,
+        initialState: AppState(databaseNames: ['name1', 'name2']),
+      );
+
+      store.dispatch(
+        RemoveDatabaseAction('name2'),
+      );
+
+      expect(databasesSelector(store.state), ['name1']);
+    });
+  });
+  group('Opened Database Name Reducer', () {
+    test('should change to database name of newly loaded database', () {
+      final store = Store<AppState>(
+        appReducer,
+        initialState: AppState(),
+      );
+
+      store.dispatch(
+        DatabaseLoadedAction(Database(name: 'new'), 'masterpass'),
+      );
+
+      expect(store.state.openedDatabaseName, 'new');
+    });
+    test('should be empty after database locked', () {
+      final store = Store<AppState>(
+        appReducer,
+        initialState: AppState(openedDatabaseName: 'locked'),
+      );
+
+      store.dispatch(LockDatabaseAction());
+
+      expect(store.state.openedDatabaseName, '');
+    });
+  });
+  group('Master Password Reducer', () {
+    test('should change master password to that of newly loaded database', () {
+      final store = Store<AppState>(
+        appReducer,
+        initialState: AppState(),
+      );
+
+      store.dispatch(
+        DatabaseLoadedAction(Database(), 'masterpass'),
+      );
+
+      expect(masterPasswordSelector(store.state), 'masterpass');
+    });
+    test('should be empty after database locked', () {
+      final store = Store<AppState>(
+        appReducer,
+        initialState: AppState(masterPassword: 'locked'),
+      );
+
+      store.dispatch(LockDatabaseAction());
+
+      expect(masterPasswordSelector(store.state), '');
+    });
+  });
+group('Database Locked Reducer', () {
+    test('should set to unlocked when new database is loaded', () {
+      final store = Store<AppState>(
+        appReducer,
+        initialState: AppState(),
+      );
+
+      store.dispatch(
+        DatabaseLoadedAction(Database(), ''),
+      );
+
+      expect(store.state.databaseLocked, false);
+    });
+    test('should set to locked when database is locked', () {
+      final store = Store<AppState>(
+        appReducer,
+        initialState: AppState(databaseLocked: false),
+      );
+
+      store.dispatch(LockDatabaseAction());
+
+      expect(store.state.databaseLocked, true);
     });
   });
 }

@@ -10,8 +10,9 @@ class DatabaseNamesLoadedAction {
 
 class CreateDatabaseAction {
   final Database database;
+  final String masterPassword;
 
-  CreateDatabaseAction(this.database);
+  CreateDatabaseAction(this.database, this.masterPassword);
 }
 
 class DatabaseCreatedAction {
@@ -21,13 +22,19 @@ class DatabaseCreatedAction {
 
 class LoadDatabaseAction {
   final String databaseName;
-  LoadDatabaseAction(this.databaseName);
+  final String masterPassword;
+  LoadDatabaseAction(this.databaseName, this.masterPassword);
 }
 
 class DatabaseLoadedAction {
   final Database database;
-  DatabaseLoadedAction(this.database);
+  final String masterPassword;
+  DatabaseLoadedAction(this.database, this.masterPassword);
 }
+
+class LoadDatabaseFailedAction {}
+
+class LockDatabaseAction {}
 
 class SaveDatabaseAction {}
 

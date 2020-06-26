@@ -7,10 +7,15 @@ final databaseReducer = combineReducers<Database>([
   TypedReducer<Database, DatabaseLoadedAction>(_loadDatabase),
   TypedReducer<Database, SavePasswordAction>(_savePassword),
   TypedReducer<Database, RemovePasswordAction>(_removePassword),
+  TypedReducer<Database, LockDatabaseAction>(_lockDatabase),
 ]);
 
 Database _loadDatabase(Database database, DatabaseLoadedAction action) {
   return action.database;
+}
+
+Database _lockDatabase(Database database, LockDatabaseAction action) {
+  return null;
 }
 
 Database _savePassword(Database database, SavePasswordAction action) {

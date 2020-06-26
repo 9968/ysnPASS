@@ -8,3 +8,5 @@ Database openedDatabaseSelector(AppState state) => state.loadedDatabase;
 
 List<PasswordEntry> passwordEntriesSelector(AppState state) =>
     openedDatabaseSelector(state)?.passwordEntries ?? [];
+
+String masterPasswordSelector(AppState state) => state.masterPassword;

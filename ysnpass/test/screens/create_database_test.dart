@@ -27,17 +27,22 @@ void main() {
       ),
     );
 
-    final field = find.byType(TextFormField);
-    await tester.showKeyboard(field);
-    await tester.enterText(field, 'databasename');
+    final nameField = find.byKey(Key('database-name'));
+    await tester.showKeyboard(nameField);
+    await tester.enterText(nameField, 'databasename');
+
+    final passwordField = find.byKey(Key('master-password'));
+    await tester.showKeyboard(passwordField);
+    await tester.enterText(passwordField, 'masterpassword');
 
     await tester.tap(find.byType(RaisedButton));
 
     verify(
       store.dispatch(
         argThat(
-          predicate<CreateDatabaseAction>(
-              (action) => action.database.name == 'databasename'),
+          predicate<CreateDatabaseAction>((action) =>
+              action.database.name == 'databasename' &&
+              action.masterPassword == 'masterpassword'),
         ),
       ),
     );

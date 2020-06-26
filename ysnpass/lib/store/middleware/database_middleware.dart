@@ -39,9 +39,11 @@ Middleware<AppState> _createCreateDatabase(
     DatabaseFileSystem databaseFileSystem) {
   return (Store<AppState> store, action, NextDispatcher next) async {
     next(action);
-    await databaseFileSystem.saveDatabase(action.database);
+    await databaseFileSystem.saveDatabase(
+        action.database, action.masterPassword);
     store.dispatch(DatabaseCreatedAction(action.database.name));
-    store.dispatch(LoadDatabaseAction(action.database.name));
+    store.dispatch(
+        LoadDatabaseAction(action.database.name, action.masterPassword));
   };
 }
 
@@ -49,12 +51,14 @@ Middleware<AppState> _createLoadDatabase(
     DatabaseFileSystem databaseFileSystem) {
   return (Store<AppState> store, action, NextDispatcher next) async {
     next(action);
-
-    store.dispatch(
-      DatabaseLoadedAction(
-        await databaseFileSystem.openDatabase(action.databaseName),
-      ),
-    );
+    try {
+      final database = await databaseFileSystem.openDatabase(
+          action.databaseName, action.masterPassword);
+      store.dispatch(DatabaseLoadedAction(database, action.masterPassword));
+    } catch (e) {
+      print('database load failed');
+      store.dispatch(LoadDatabaseFailedAction());
+    }
   };
 }
 
@@ -63,8 +67,9 @@ Middleware<AppState> _createSaveDatabase(
   return (Store<AppState> store, action, NextDispatcher next) async {
     next(action);
     final openDatabase = openedDatabaseSelector(store.state);
+    final masterPassword = masterPasswordSelector(store.state);
 
-    await databaseFileSystem.saveDatabase(openDatabase);
+    await databaseFileSystem.saveDatabase(openDatabase, masterPassword);
   };
 }
 

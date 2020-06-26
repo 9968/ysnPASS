@@ -1,7 +1,7 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:path_provider/path_provider.dart';
+import 'package:ysnpass/encryption/encryption.dart';
 import 'package:ysnpass/store/models/database.dart';
 
 class DatabaseFileSystem {
@@ -17,21 +17,19 @@ class DatabaseFileSystem {
         .toList();
   }
 
-  Future<Database> openDatabase(String databaseName) async {
+  Future<Database> openDatabase(String databaseName, String masterPassword) async {
     final directory = await _directory;
     final databasePath = '${directory.path}/$databaseName.ysndb';
-    final database = Database.fromJson(
-      jsonDecode(
-        File(databasePath).readAsStringSync(),
-      ),
-    );
-    return database;
+    final databaseBytes = File(databasePath).readAsBytesSync();
+
+    return Encryption.decryptDB(databaseBytes, masterPassword);
   }
 
-  Future<File> saveDatabase(Database database) async {
+  Future<File> saveDatabase(Database database, String masterPassword) async {
+    final encryptedDatabase = Encryption.encryptDB(database, masterPassword);
     final directory = await _directory;
     final filePath = '${directory.path}/${database.name}.ysndb';
-    return File(filePath).writeAsString(jsonEncode(database));
+    return File(filePath).writeAsBytes(encryptedDatabase);
   }
 
   removeDatabase(String databaseName) async {

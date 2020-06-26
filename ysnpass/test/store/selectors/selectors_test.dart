@@ -9,11 +9,13 @@ void main() {
   final mockSelectedDatabase =
       Database(name: '1234', passwordEntries: mockPasswordEntries);
   final mockDatabaseNames = ['0', '1', '1234'];
-
+  final mockMasterPassword = 'masterpass';
   final mockAppState = AppState(
-      databaseNames: mockDatabaseNames,
-      loadedDatabase: mockSelectedDatabase,
-      openedDatabaseName: '1234');
+    databaseNames: mockDatabaseNames,
+    loadedDatabase: mockSelectedDatabase,
+    openedDatabaseName: '1234',
+    masterPassword: mockMasterPassword,
+  );
   group('Selectors', () {
     test('should select databases', () {
       expect(databasesSelector(mockAppState), mockDatabaseNames);
@@ -23,6 +25,9 @@ void main() {
     });
     test('should select passwords from opened database', () {
       expect(passwordEntriesSelector(mockAppState), mockPasswordEntries);
+    });
+    test('should select master password from opened database', () {
+      expect(masterPasswordSelector(mockAppState), mockMasterPassword);
     });
   });
 }
