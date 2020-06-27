@@ -140,8 +140,8 @@ void main() {
       expect(masterPasswordSelector(store.state), '');
     });
   });
-group('Database Locked Reducer', () {
-    test('should set to unlocked when new database is loaded', () {
+  group('Login Successful Reducer', () {
+    test('should set to true when new database is loaded', () {
       final store = Store<AppState>(
         appReducer,
         initialState: AppState(),
@@ -151,17 +151,29 @@ group('Database Locked Reducer', () {
         DatabaseLoadedAction(Database(), ''),
       );
 
-      expect(store.state.databaseLocked, false);
+      expect(store.state.loginSuccessful, true);
     });
-    test('should set to locked when database is locked', () {
+    test('should set to false when database load failed', () {
       final store = Store<AppState>(
         appReducer,
-        initialState: AppState(databaseLocked: false),
+        initialState: AppState(),
+      );
+
+      store.dispatch(
+        LoadDatabaseFailedAction(),
+      );
+
+      expect(store.state.loginSuccessful, false);
+    });
+    test('should set to null when database is locked', () {
+      final store = Store<AppState>(
+        appReducer,
+        initialState: AppState(loginSuccessful: true),
       );
 
       store.dispatch(LockDatabaseAction());
 
-      expect(store.state.databaseLocked, true);
+      expect(store.state.loginSuccessful, null);
     });
   });
 }

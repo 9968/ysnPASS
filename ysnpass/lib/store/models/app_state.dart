@@ -7,12 +7,12 @@ class AppState {
   final String openedDatabaseName;
   final Database loadedDatabase;
   final String masterPassword;
-  final bool databaseLocked;
+  final bool loginSuccessful;
 
   AppState(
       {this.databaseNames = const [],
       this.openedDatabaseName,
       this.loadedDatabase,
       this.masterPassword,
-      this.databaseLocked = true});
+      this.loginSuccessful});
 }

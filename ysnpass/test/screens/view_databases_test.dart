@@ -16,7 +16,10 @@ void main() {
 
   setUpAll(() {
     store = mockStore(
-        AppState(databaseNames: ['name1', 'name2'], databaseLocked: true));
+      AppState(
+        databaseNames: ['name1', 'name2'],
+      ),
+    );
   });
 
   testWidgets('should show list of databases', (WidgetTester tester) async {
@@ -51,7 +54,7 @@ void main() {
     final passwordField = find.byType(TextFormField);
     await tester.showKeyboard(passwordField);
     await tester.enterText(passwordField, 'password');
-    await tester.tap(find.byType(FlatButton));
+    await tester.tap(find.byKey(Key('unlock-button')));
 
     verify(navigator.didPush(any, any));
     verify(
@@ -61,6 +64,27 @@ void main() {
             action.masterPassword == 'password'),
       ),
     );
+  });
+  testWidgets(
+      'should show password dialog and not dispatch load database action when cancelled',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(
+      testApp(
+        mockStore: store,
+        mockNavigatorObserver: navigator,
+        testScreen: ViewDatabases(onInit: () => null),
+      ),
+    );
+
+    await tester.tap(find.byType(ListTile).at(0));
+    await tester.pump();
+    final passwordField = find.byType(TextFormField);
+    await tester.showKeyboard(passwordField);
+    await tester.enterText(passwordField, 'password');
+    await tester.tap(find.byKey(Key('cancel-button')));
+
+    verify(navigator.didPush(any, any));
+    verifyNever(store.dispatch());
   });
 
   testWidgets(
