@@ -55,6 +55,7 @@ class PasswordDialog extends StatelessWidget {
         title: Text('Enter master password'),
         content: TextFormField(
           autofocus: true,
+          obscureText: true,
           onChanged: (value) => masterPassword = value,
           autovalidate: true,
           validator: (_) => viewModel.unlockFailed
