@@ -36,6 +36,7 @@ class _ViewPasswordEntryState extends State<ViewPasswordEntry> {
                     : String.fromCharCode(0x25CF) * 10,
               ),
               trailing: IconButton(
+                  key: Key('toggle-show-password'),
                   icon: Icon(Icons.remove_red_eye),
                   onPressed: _toggleShowPassword),
             )

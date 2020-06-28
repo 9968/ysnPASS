@@ -28,7 +28,8 @@ void main() {
     reset(navigator);
   });
 
-  testWidgets('should show username and password', (WidgetTester tester) async {
+  testWidgets('should show username and hidden password',
+      (WidgetTester tester) async {
     await tester.pumpWidget(
       testApp(
         mockNavigatorObserver: navigator,
@@ -38,7 +39,24 @@ void main() {
     );
 
     expect(find.text('username'), findsOneWidget);
+    expect(find.text(String.fromCharCode(0x25cf) * 10), findsOneWidget);
+  });
+
+  testWidgets('should toggle show/hide password', (WidgetTester tester) async {
+    await tester.pumpWidget(testApp(
+        mockNavigatorObserver: navigator,
+        mockStore: store,
+        testScreen: ViewPasswordContainer('1234')));
+    final toggleShowPassword = find.byKey(Key('toggle-show-password'));
+    await tester.tap(toggleShowPassword);
+    await tester.pump();
+
     expect(find.text('password'), findsOneWidget);
+
+    await tester.tap(toggleShowPassword);
+    await tester.pump();
+
+    expect(find.text('password'), findsNothing);
   });
 
   testWidgets('should navigate on click of edit password entry button',
