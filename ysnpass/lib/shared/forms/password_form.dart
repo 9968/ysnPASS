@@ -29,6 +29,7 @@ class PasswordForm extends StatelessWidget {
           TextFormField(
             key: Key('password'),
             controller: _passwordController,
+            obscureText: true,
             validator: (value) =>
                 value.isEmpty ? 'Please enter a password' : null,
           ),
