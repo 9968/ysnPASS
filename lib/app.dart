@@ -17,9 +17,13 @@ class YsnPassApp extends StatelessWidget {
       child: MaterialApp(
         title: 'ysnPASS',
         theme: ThemeData(
-          brightness: Brightness.dark,
-          primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
+          brightness: Brightness.dark,
+          canvasColor: Color(0xFF212D3C),
+          dialogBackgroundColor: Color(0xFF151d27),
+          primaryColor: Color(0xFF151d27),
+          buttonColor: Color(0xFF151d27),
+          accentColor: Colors.blue,
         ),
         home: ViewDatabases(
             onInit: () => store.dispatch(LoadDatabaseNamesAction())),

@@ -16,9 +16,9 @@ class PasswordDialogModel {
   });
 }
 
-class PasswordDialog extends StatelessWidget {
+class PasswordDialog extends AlertDialog {
   final databaseName;
-  PasswordDialog(this.databaseName);
+  PasswordDialog(this.databaseName) : super();
 
   @override
   Widget build(BuildContext context) {
@@ -87,6 +87,7 @@ class PasswordDialog extends StatelessWidget {
 Future<void> showPasswordDialog(context, {String databaseName}) async {
   return showDialog(
       context: context,
+      barrierColor: Color(0xEE212D3C),
       barrierDismissible: false,
       useRootNavigator: true,
       builder: (context) {

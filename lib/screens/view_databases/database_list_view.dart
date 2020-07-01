@@ -27,6 +27,7 @@ class DatabaseListView extends StatelessWidget {
       );
     }, builder: (context, databaseListViewModel) {
       return ListView(
+        shrinkWrap: true,
         children: databaseListViewModel.databaseList
             .map(
               (databaseName) => ListTile(

@@ -24,7 +24,7 @@ class _ViewDatabasesState extends State<ViewDatabases> {
       ),
       body: Column(
         children: [
-          Expanded(child: DatabaseListView()),
+          DatabaseListView(),
           RaisedButton.icon(
             icon: Icon(Icons.add),
             label: Text('CREATE DATABASE'),
