@@ -24,16 +24,22 @@ class _ViewDatabasesState extends State<ViewDatabases> {
       ),
       body: Column(
         children: [
-          DatabaseListView(),
-          RaisedButton.icon(
-            icon: Icon(Icons.add),
-            label: Text('CREATE DATABASE'),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => CreateDatabase()),
-              );
-            },
+          ConstrainedBox(
+              constraints: BoxConstraints(
+                  minHeight: MediaQuery.of(context).size.height * 0.43),
+              child: DatabaseListView()),
+          Align(
+            alignment: Alignment.topCenter,
+            child: RaisedButton.icon(
+              icon: Icon(Icons.add),
+              label: Text('CREATE DATABASE'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreateDatabase()),
+                );
+              },
+            ),
           ),
         ],
       ),
