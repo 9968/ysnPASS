@@ -8,6 +8,7 @@ part of 'password_entry.dart';
 
 PasswordEntry _$PasswordEntryFromJson(Map<String, dynamic> json) {
   return PasswordEntry(
+    json['name'] as String,
     json['username'] as String,
     json['password'] as String,
     id: json['id'] as String,
@@ -17,6 +18,7 @@ PasswordEntry _$PasswordEntryFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$PasswordEntryToJson(PasswordEntry instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'name': instance.name,
       'username': instance.username,
       'password': instance.password,
     };

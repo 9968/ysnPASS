@@ -5,7 +5,13 @@ import 'package:ysnpass/store/models/password_entry.dart';
 import 'package:ysnpass/store/selectors/selectors.dart';
 
 void main() {
-  final mockPasswordEntries = [PasswordEntry('username', 'password')];
+  final mockPasswordEntries = [
+    PasswordEntry(
+      'entryname',
+      'username',
+      'password',
+    )
+  ];
   final mockSelectedDatabase =
       Database(name: '1234', passwordEntries: mockPasswordEntries);
   final mockDatabaseNames = ['0', '1', '1234'];

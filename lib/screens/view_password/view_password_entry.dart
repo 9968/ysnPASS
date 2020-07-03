@@ -21,7 +21,7 @@ class _ViewPasswordEntryState extends State<ViewPasswordEntry> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Password'),
+        title: Text(widget.viewPasswordEntryModel.passwordEntry.name),
       ),
       body: Builder(
         builder: (context) => Column(children: [

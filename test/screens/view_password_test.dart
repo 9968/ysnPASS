@@ -18,7 +18,9 @@ void main() {
       AppState(
         loadedDatabase: Database(
           name: 'database',
-          passwordEntries: [PasswordEntry('username', 'password', id: '1234')],
+          passwordEntries: [
+            PasswordEntry('entryname', 'username', 'password', id: '1234')
+          ],
         ),
       ),
     );
@@ -28,6 +30,18 @@ void main() {
     reset(navigator);
   });
 
+  testWidgets('appbar title should be name of entry',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(
+      testApp(
+        mockNavigatorObserver: navigator,
+        mockStore: store,
+        testScreen: ViewPasswordContainer('1234'),
+      ),
+    );
+
+    expect(find.widgetWithText(AppBar, 'entryname'), findsOneWidget);
+  });
   testWidgets('should show username and hidden password',
       (WidgetTester tester) async {
     await tester.pumpWidget(

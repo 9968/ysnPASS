@@ -29,6 +29,10 @@ void main() {
     expect(find.text('user1234'), findsNothing);
     expect(find.text('pass1234'), findsNothing);
 
+    final entryname = find.byKey(Key('name'));
+    await tester.showKeyboard(entryname);
+    await tester.enterText(entryname, 'entryname');
+
     final username = find.byKey(Key('username'));
     await tester.showKeyboard(username);
     await tester.enterText(username, 'user1234');
@@ -44,6 +48,7 @@ void main() {
         argThat(
           predicate<SavePasswordAction>(
             (action) =>
+                action.passwordEntry.name == 'entryname' &&
                 action.passwordEntry.username == 'user1234' &&
                 action.passwordEntry.password == 'pass1234',
           ),

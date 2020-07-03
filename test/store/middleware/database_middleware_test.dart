@@ -15,7 +15,7 @@ void main() {
   DatabaseFileSystem mockDatabaseFileSystem;
   Store<AppState> store;
   final database = Database(name: 'database');
-  final password = PasswordEntry('username', 'password');
+  final password = PasswordEntry('entryname', 'username', 'password');
 
   group('Database Middleware', () {
     setUp(() {

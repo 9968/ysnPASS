@@ -3,19 +3,16 @@ import 'package:ysnpass/store/models/password_entry.dart';
 
 class PasswordForm extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
-  final _userNameController;
-  final _passwordController;
   final Function(PasswordEntry) onSubmit;
   final PasswordEntry passwordEntry;
 
-  PasswordForm({@required this.onSubmit, this.passwordEntry})
-      : _userNameController =
-            TextEditingController(text: passwordEntry?.username),
-        _passwordController =
-            TextEditingController(text: passwordEntry?.password);
-
+  PasswordForm({@required this.onSubmit, this.passwordEntry});
   @override
   Widget build(BuildContext context) {
+    var name = passwordEntry?.name;
+    var username = passwordEntry?.username;
+    var password = passwordEntry?.password;
+
     return Container(
       padding: EdgeInsets.all(20),
       child: Form(
@@ -23,15 +20,25 @@ class PasswordForm extends StatelessWidget {
         child: Column(
           children: [
             TextFormField(
+              key: Key('name'),
+              decoration: InputDecoration(labelText: 'name'),
+              initialValue: name,
+              onChanged: (value) => name = value,
+              validator: (value) =>
+                  value.isEmpty ? 'Please enter a name' : null,
+            ),
+            TextFormField(
               key: Key('username'),
-              controller: _userNameController,
+              initialValue: username,
+              onChanged: (value) => username = value,
               decoration: InputDecoration(labelText: 'username'),
               validator: (value) =>
                   value.isEmpty ? 'Please enter an username' : null,
             ),
             TextFormField(
               key: Key('password'),
-              controller: _passwordController,
+              initialValue: password,
+              onChanged: (value) => password = value,
               decoration: InputDecoration(labelText: 'password'),
               obscureText: true,
               validator: (value) =>
@@ -49,8 +56,11 @@ class PasswordForm extends StatelessWidget {
                     if (_formKey.currentState.validate()) {
                       onSubmit(
                         PasswordEntry(
-                            _userNameController.text, _passwordController.text,
-                            id: passwordEntry?.id),
+                          name,
+                          username,
+                          password,
+                          id: passwordEntry?.id,
+                        ),
                       );
                       Navigator.pop(context);
                     }

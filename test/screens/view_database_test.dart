@@ -20,7 +20,7 @@ void main() {
       AppState(
         loadedDatabase: Database(
           name: 'database',
-          passwordEntries: [PasswordEntry('username', 'password')],
+          passwordEntries: [PasswordEntry('entryname', 'username', 'password')],
         ),
       ),
     );
@@ -40,7 +40,7 @@ void main() {
       ),
     );
 
-    await tester.tap(find.text('username'));
+    await tester.tap(find.text('entryname'));
 
     verify(navigator.didPush(any, any));
   });

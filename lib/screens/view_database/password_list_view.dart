@@ -17,7 +17,7 @@ class PasswordListView extends StatelessWidget {
         children: passwordList
             .map(
               (password) => ListTile(
-                title: Text(password.username),
+                title: Text(password.name),
                 onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(

@@ -24,7 +24,7 @@ void main() {
     });
     test('should add password to the list on SavePasswordAction', () {
       final emptyDatabase = Database(name: '1234');
-      final newPassword = PasswordEntry('username', 'password');
+      final newPassword = PasswordEntry('entryname', 'username', 'password');
       final store = Store<AppState>(
         appReducer,
         initialState: AppState(loadedDatabase: emptyDatabase),
@@ -37,8 +37,10 @@ void main() {
       expect(passwordEntriesSelector(store.state), [newPassword]);
     });
     test('should edit password on SavePasswordAction', () {
-      final newPassword = PasswordEntry('username', 'password', id: '1234');
-      final changedPassword = PasswordEntry('changed', 'changed', id: '1234');
+      final newPassword =
+          PasswordEntry('entryname', 'username', 'password', id: '1234');
+      final changedPassword =
+          PasswordEntry('changed', 'changed', 'changed', id: '1234');
       final filledDatabase =
           Database(name: '1234', passwordEntries: [newPassword]);
       final store = Store<AppState>(
@@ -53,7 +55,8 @@ void main() {
       expect(passwordEntriesSelector(store.state), [changedPassword]);
     });
     test('should remove password on RemovePasswordAction', () {
-      final newPassword = PasswordEntry('username', 'password', id: '1234');
+      final newPassword =
+          PasswordEntry('entryname', 'username', 'password', id: '1234');
       final filledDatabase =
           Database(name: '1234', passwordEntries: [newPassword]);
       final store = Store<AppState>(
