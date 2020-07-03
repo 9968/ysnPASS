@@ -5,10 +5,12 @@ name: YSNPASS CI
 on:
   push:
     branches: [develop]
+    paths:
+      - 'ysnpass/**'
   pull_request:
     branches: [develop]
-  paths:
-    - 'ysnpass/**'
+    paths:
+      - 'ysnpass/**'
 
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
