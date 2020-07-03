@@ -16,37 +16,51 @@ class PasswordForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        children: [
-          TextFormField(
-            key: Key('username'),
-            controller: _userNameController,
-            validator: (value) =>
-                value.isEmpty ? 'Please enter an username' : null,
-          ),
-          TextFormField(
-            key: Key('password'),
-            controller: _passwordController,
-            obscureText: true,
-            validator: (value) =>
-                value.isEmpty ? 'Please enter a password' : null,
-          ),
-          RaisedButton(
-            onPressed: () {
-              if (_formKey.currentState.validate()) {
-                onSubmit(
-                  PasswordEntry(
-                      _userNameController.text, _passwordController.text,
-                      id: passwordEntry?.id),
-                );
-                Navigator.pop(context);
-              }
-            },
-            child: Text('SAVE PASSWORD'),
-          ),
-        ],
+    return Container(
+      padding: EdgeInsets.all(20),
+      child: Form(
+        key: _formKey,
+        child: Column(
+          children: [
+            TextFormField(
+              key: Key('username'),
+              controller: _userNameController,
+              decoration: InputDecoration(labelText: 'username'),
+              validator: (value) =>
+                  value.isEmpty ? 'Please enter an username' : null,
+            ),
+            TextFormField(
+              key: Key('password'),
+              controller: _passwordController,
+              decoration: InputDecoration(labelText: 'password'),
+              obscureText: true,
+              validator: (value) =>
+                  value.isEmpty ? 'Please enter a password' : null,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                FlatButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text('CANCEL'),
+                ),
+                RaisedButton(
+                  onPressed: () {
+                    if (_formKey.currentState.validate()) {
+                      onSubmit(
+                        PasswordEntry(
+                            _userNameController.text, _passwordController.text,
+                            id: passwordEntry?.id),
+                      );
+                      Navigator.pop(context);
+                    }
+                  },
+                  child: Text('SAVE PASSWORD'),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

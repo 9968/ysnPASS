@@ -26,16 +26,16 @@ void main() {
         testScreen: CreatePassword(),
       ),
     );
-    expect(find.text('username'), findsNothing);
-    expect(find.text('password'), findsNothing);
+    expect(find.text('user1234'), findsNothing);
+    expect(find.text('pass1234'), findsNothing);
 
     final username = find.byKey(Key('username'));
     await tester.showKeyboard(username);
-    await tester.enterText(username, 'username');
+    await tester.enterText(username, 'user1234');
 
     final password = find.byKey(Key('password'));
     await tester.showKeyboard(password);
-    await tester.enterText(password, 'password');
+    await tester.enterText(password, 'pass1234');
 
     await tester.tap(find.byType(RaisedButton));
 
@@ -44,8 +44,8 @@ void main() {
         argThat(
           predicate<SavePasswordAction>(
             (action) =>
-                action.passwordEntry.username == 'username' &&
-                action.passwordEntry.password == 'password',
+                action.passwordEntry.username == 'user1234' &&
+                action.passwordEntry.password == 'pass1234',
           ),
         ),
       ),

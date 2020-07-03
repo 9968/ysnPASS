@@ -25,12 +25,12 @@ void main() {
         mockNavigatorObserver: navigator,
         mockStore: store,
         testScreen: EditPasswordScreen(
-          passwordEntry: PasswordEntry('username', 'password', id: '1234'),
+          passwordEntry: PasswordEntry('user1234', 'pass1234', id: '1234'),
         ),
       ),
     );
-    expect(find.text('username'), findsOneWidget);
-    expect(find.text('password'), findsOneWidget);
+    expect(find.text('user1234'), findsOneWidget);
+    expect(find.text('pass1234'), findsOneWidget);
 
     final password = find.byKey(Key('password'));
     await tester.showKeyboard(password);
@@ -43,7 +43,7 @@ void main() {
         argThat(
           predicate<SavePasswordAction>(
             (action) =>
-                action.passwordEntry.username == 'username' &&
+                action.passwordEntry.username == 'user1234' &&
                 action.passwordEntry.password == 'changed' &&
                 action.passwordEntry.id == '1234',
           ),
