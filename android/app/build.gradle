@@ -43,7 +43,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.n9968.ysnpass"
+        applicationId "ch.u9968.ysnpass"
         minSdkVersion 16
         targetSdkVersion 28
         versionCode flutterVersionCode.toInteger()

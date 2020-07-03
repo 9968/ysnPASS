@@ -1,4 +1,4 @@
-package com.n9968.ysnpass
+package ch.u9968.ysnpass
 
 import io.flutter.embedding.android.FlutterActivity
 
