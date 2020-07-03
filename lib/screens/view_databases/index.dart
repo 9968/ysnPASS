@@ -22,24 +22,26 @@ class _ViewDatabasesState extends State<ViewDatabases> {
       appBar: AppBar(
         title: Text('My Databases'),
       ),
-      body: Column(
-        children: [
-          ConstrainedBox(
-            constraints: BoxConstraints(
-                minHeight: MediaQuery.of(context).size.height * 0.43),
-            child: DatabaseListView(),
-          ),
-          RaisedButton.icon(
-            icon: Icon(Icons.add),
-            label: Text('CREATE DATABASE'),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => CreateDatabase()),
-              );
-            },
-          ),
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            ConstrainedBox(
+              constraints: BoxConstraints(
+                  minHeight: MediaQuery.of(context).size.height * 0.43),
+              child: DatabaseListView(),
+            ),
+            RaisedButton.icon(
+              icon: Icon(Icons.add),
+              label: Text('CREATE DATABASE'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreateDatabase()),
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
