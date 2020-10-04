@@ -26,5 +26,6 @@ jobs:
       - uses: subosito/flutter-action@v1
         with:
           channel: dev
+      - run: cd ysnpass
       - run: flutter pub get
       - run: flutter test
