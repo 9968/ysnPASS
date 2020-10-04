@@ -2,20 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ysnpass/screens/create_database/index.dart';
 import 'package:ysnpass/screens/view_databases/database_list_view.dart';
 
-class ViewDatabases extends StatefulWidget {
-  final void Function() onInit;
-  ViewDatabases({@required this.onInit});
-  @override
-  _ViewDatabasesState createState() => _ViewDatabasesState();
-}
-
-class _ViewDatabasesState extends State<ViewDatabases> {
-  @override
-  void initState() {
-    widget.onInit();
-    super.initState();
-  }
-
+class ViewDatabases extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

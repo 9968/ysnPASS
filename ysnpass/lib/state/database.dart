@@ -1,10 +1,9 @@
-import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:ysnpass/store/models/password_entry.dart';
+
+import 'password_entry.dart';
 
 part 'database.g.dart';
 
-@immutable
 @JsonSerializable()
 class Database {
   final String name;

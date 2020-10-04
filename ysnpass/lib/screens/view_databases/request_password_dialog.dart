@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
+import 'package:provider/provider.dart';
 import 'package:ysnpass/screens/view_database/index.dart';
-import 'package:ysnpass/store/actions/actions.dart';
-import 'package:ysnpass/store/models/app_state.dart';
+import 'package:ysnpass/state/app_state.dart';
 
 class PasswordDialogModel {
   final Function loadDatabase;
@@ -24,57 +23,35 @@ class PasswordDialog extends AlertDialog {
   Widget build(BuildContext context) {
     String masterPassword;
 
-    return StoreConnector<AppState, PasswordDialogModel>(
-      converter: (store) {
-        var unlockFailed;
-        switch (store.state.loginSuccessful) {
-          case true:
-            Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (_) => ViewDatabase()));
-            unlockFailed = false;
-            break;
-          case false:
-            unlockFailed = true;
-            break;
-          default:
-            unlockFailed = false;
-            break;
-        }
-
-        return PasswordDialogModel(
-          loadDatabase: (databaseName, masterPasword) => store.dispatch(
-            LoadDatabaseAction(databaseName, masterPassword),
-          ),
-          lockDatabase: () => store.dispatch(
-            LockDatabaseAction(),
-          ),
-          unlockFailed: unlockFailed,
-        );
-      },
-      builder: (context, PasswordDialogModel viewModel) => AlertDialog(
+    return Consumer<AppState>(
+      builder: (context, appState, _) => AlertDialog(
         title: Text('Enter master password'),
         content: TextFormField(
           autofocus: true,
           obscureText: true,
           onChanged: (value) => masterPassword = value,
           autovalidate: true,
-          validator: (_) => viewModel.unlockFailed
-              ? 'wrong password, please try again'
-              : null,
+          validator: (_) =>
+              appState.unlockFailed ? 'wrong password, please try again' : null,
         ),
         actions: [
           FlatButton(
             key: Key('cancel-button'),
             onPressed: () {
-              viewModel.lockDatabase();
               Navigator.pop(context);
             },
             child: Text('CANCEL'),
           ),
           FlatButton(
             key: Key('unlock-button'),
-            onPressed: () {
-              viewModel.loadDatabase(databaseName, masterPassword);
+            onPressed: () async {
+              if (await appState.unlockDatabase(databaseName, masterPassword)) {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ViewDatabase(),
+                    ));
+              }
             },
             child: Text('UNLOCK'),
           ),

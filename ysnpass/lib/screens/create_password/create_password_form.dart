@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
+import 'package:provider/provider.dart';
 import 'package:ysnpass/shared/forms/password_form.dart';
-import 'package:ysnpass/store/actions/actions.dart';
-import 'package:ysnpass/store/models/app_state.dart';
-import 'package:ysnpass/store/models/password_entry.dart';
+import 'package:ysnpass/state/app_state.dart';
 
 class CreatePasswordForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, void Function(PasswordEntry)>(
-        converter: (store) => (passwordEntry) =>
-            store.dispatch(SavePasswordAction(passwordEntry)),
-        builder: (context, onCreate) => PasswordForm(onSubmit: onCreate));
+    return Consumer<AppState>(
+        builder: (context, appState, _) =>
+            PasswordForm(onSubmit: appState.savePassword));
   }
 }

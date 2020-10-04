@@ -1,27 +1,22 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:ysnpass/screens/view_database/index.dart';
-import 'package:ysnpass/store/actions/actions.dart';
-import 'package:ysnpass/store/models/app_state.dart';
-import 'package:ysnpass/store/models/database.dart';
-import 'package:ysnpass/store/models/password_entry.dart';
+import 'package:ysnpass/state/password_entry.dart';
 
 import '../_test_utils/utils.dart';
 
 // TODO tests for clipboard
 void main() {
   final MockNavigatorObserver navigator = MockNavigatorObserver();
-
-  var store;
+  final MockAppState appState = MockAppState();
 
   setUpAll(() {
-    store = mockStore(
-      AppState(
-        loadedDatabase: Database(
-          name: 'database',
-          passwordEntries: [PasswordEntry('entryname', 'username', 'password')],
-        ),
+    when(appState.passwords).thenReturn(
+      UnmodifiableListView(
+        [PasswordEntry('entryname', 'username', 'password')],
       ),
     );
   });
@@ -35,7 +30,7 @@ void main() {
     await tester.pumpWidget(
       testApp(
         mockNavigatorObserver: navigator,
-        mockStore: store,
+        mockAppState: appState,
         testScreen: ViewDatabase(),
       ),
     );
@@ -49,7 +44,7 @@ void main() {
     await tester.pumpWidget(
       testApp(
         mockNavigatorObserver: navigator,
-        mockStore: store,
+        mockAppState: appState,
         testScreen: ViewDatabase(),
       ),
     );
@@ -57,20 +52,5 @@ void main() {
     await tester.tap(find.byType(FloatingActionButton));
 
     verify(navigator.didPush(any, any));
-  });
-  testWidgets('should dispatch lock database action and navigate back',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      testApp(
-        mockNavigatorObserver: navigator,
-        mockStore: store,
-        testScreen: ViewDatabase(),
-      ),
-    );
-
-    await tester.tap(find.byType(BackButton));
-
-    verify(store.dispatch(argThat(isA<LockDatabaseAction>())));
-    verify(navigator.didPop(any, any));
   });
 }

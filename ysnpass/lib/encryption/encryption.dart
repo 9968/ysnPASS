@@ -2,8 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:encrypt/encrypt.dart';
-
-import '../store/models/database.dart';
+import 'package:ysnpass/state/database.dart';
 
 class Encryption {
   static Uint8List encryptDB(Database db, String masterPassword) {

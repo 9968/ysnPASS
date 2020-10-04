@@ -1,20 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:redux/redux.dart';
+import 'package:provider/provider.dart';
 import 'package:ysnpass/screens/view_password/index.dart';
-import 'package:ysnpass/store/models/app_state.dart';
-import 'package:ysnpass/store/models/password_entry.dart';
-import 'package:ysnpass/store/selectors/selectors.dart';
+import 'package:ysnpass/state/app_state.dart';
 
 class PasswordListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, List<PasswordEntry>>(
-        converter: (Store<AppState> store) {
-      return passwordEntriesSelector(store.state);
-    }, builder: (context, passwordList) {
+    return Consumer<AppState>(builder: (context, appState, _) {
       return ListView(
-        children: passwordList
+        children: appState.passwords
             .map(
               (password) => ListTile(
                 title: Text(password.name),

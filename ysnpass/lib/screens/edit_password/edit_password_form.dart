@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
+import 'package:provider/provider.dart';
 import 'package:ysnpass/shared/forms/password_form.dart';
-import 'package:ysnpass/store/actions/actions.dart';
-import 'package:ysnpass/store/models/app_state.dart';
-import 'package:ysnpass/store/models/password_entry.dart';
+import 'package:ysnpass/state/app_state.dart';
+import 'package:ysnpass/state/password_entry.dart';
 
 class EditPasswordForm extends StatelessWidget {
   final PasswordEntry passwordEntry;
@@ -12,14 +11,11 @@ class EditPasswordForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, void Function(PasswordEntry)>(
-        converter: (store) => (passwordEntry) =>
-            store.dispatch(SavePasswordAction(passwordEntry)),
-        builder: (context, onSave) {
-          return PasswordForm(
-            onSubmit: onSave,
-            passwordEntry: passwordEntry,
-          );
-        });
+    return Consumer<AppState>(builder: (context, appState, _) {
+      return PasswordForm(
+        onSubmit: appState.savePassword,
+        passwordEntry: passwordEntry,
+      );
+    });
   }
 }

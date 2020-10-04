@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:ysnpass/screens/view_databases/index.dart';
-import 'package:ysnpass/store/actions/actions.dart';
-import 'package:ysnpass/store/models/app_state.dart';
 
 import '../_test_utils/utils.dart';
 
@@ -11,23 +9,21 @@ import '../_test_utils/utils.dart';
 // or don't navigate if unlock not successful
 void main() {
   final MockNavigatorObserver navigator = MockNavigatorObserver();
-
-  var store;
+  MockAppState appState;
 
   setUpAll(() {
-    store = mockStore(
-      AppState(
-        databaseNames: ['name1', 'name2'],
-      ),
-    );
+    appState = new MockAppState();
+    when(appState.databases).thenReturn(List.of(['name1', 'name2']));
+    when(appState.unlockFailed).thenReturn(false);
+    when(appState.unlockDatabase(any, any))
+        .thenAnswer((_) => Future.value(true));
   });
-
   testWidgets('should show list of databases', (WidgetTester tester) async {
     await tester.pumpWidget(
       testApp(
-        mockStore: store,
         mockNavigatorObserver: navigator,
-        testScreen: ViewDatabases(onInit: () => null),
+        mockAppState: appState,
+        testScreen: ViewDatabases(),
       ),
     );
     final listTiles = find.byType(ListTile);
@@ -39,13 +35,14 @@ void main() {
     expect(secondTile, findsOneWidget);
   });
 
-  testWidgets('should show password dialog and dispatch load database action',
+  testWidgets(
+      'should show password dialog and navigate to database if unlock successful',
       (WidgetTester tester) async {
     await tester.pumpWidget(
       testApp(
-        mockStore: store,
         mockNavigatorObserver: navigator,
-        testScreen: ViewDatabases(onInit: () => null),
+        mockAppState: appState,
+        testScreen: ViewDatabases(),
       ),
     );
 
@@ -58,21 +55,16 @@ void main() {
 
     verify(navigator.didPush(any, any));
     verify(
-      store.dispatch(
-        predicate<LoadDatabaseAction>((action) =>
-            action.databaseName == 'name1' &&
-            action.masterPassword == 'password'),
-      ),
+      appState.unlockDatabase('name1', 'password'),
     );
   });
-  testWidgets(
-      'should show password dialog and not dispatch load database action when cancelled',
+  testWidgets('should show password dialog and not try unlock when cancelled',
       (WidgetTester tester) async {
     await tester.pumpWidget(
       testApp(
-        mockStore: store,
+        mockAppState: appState,
         mockNavigatorObserver: navigator,
-        testScreen: ViewDatabases(onInit: () => null),
+        testScreen: ViewDatabases(),
       ),
     );
 
@@ -84,7 +76,7 @@ void main() {
     await tester.tap(find.byKey(Key('cancel-button')));
 
     verify(navigator.didPush(any, any));
-    verifyNever(store.dispatch());
+    verifyNever(appState.unlockDatabase(any, any));
   });
 
   testWidgets(
@@ -92,9 +84,9 @@ void main() {
       (WidgetTester tester) async {
     await tester.pumpWidget(
       testApp(
-        mockStore: store,
+        mockAppState: appState,
         mockNavigatorObserver: navigator,
-        testScreen: ViewDatabases(onInit: () => null),
+        testScreen: ViewDatabases(),
       ),
     );
     reset(navigator);
@@ -108,22 +100,15 @@ void main() {
       (WidgetTester tester) async {
     await tester.pumpWidget(
       testApp(
-        mockStore: store,
+        mockAppState: appState,
         mockNavigatorObserver: navigator,
-        testScreen: ViewDatabases(onInit: () => null),
+        testScreen: ViewDatabases(),
       ),
     );
 
     final button = find.byType(IconButton).at(0);
     await tester.tap(button);
 
-    verify(
-      store.dispatch(
-        argThat(
-          predicate<RemoveDatabaseAction>(
-              (action) => action.databaseName == 'name1'),
-        ),
-      ),
-    );
+    verify(appState.removeDatabase('name1'));
   });
 }

@@ -1,27 +1,23 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:ysnpass/screens/view_password/index.dart';
-import 'package:ysnpass/store/models/app_state.dart';
-import 'package:ysnpass/store/models/database.dart';
-import 'package:ysnpass/store/models/password_entry.dart';
+import 'package:ysnpass/state/password_entry.dart';
 
 import '../_test_utils/utils.dart';
 
 void main() {
   final MockNavigatorObserver navigator = MockNavigatorObserver();
-
-  var store;
+  final MockAppState appState = MockAppState();
 
   setUpAll(() {
-    store = mockStore(
-      AppState(
-        loadedDatabase: Database(
-          name: 'database',
-          passwordEntries: [
-            PasswordEntry('entryname', 'username', 'password', id: '1234')
-          ],
-        ),
+    when(appState.passwords).thenReturn(
+      UnmodifiableListView(
+        [
+          PasswordEntry('entryname', 'username', 'password', id: '1234'),
+        ],
       ),
     );
   });
@@ -35,7 +31,7 @@ void main() {
     await tester.pumpWidget(
       testApp(
         mockNavigatorObserver: navigator,
-        mockStore: store,
+        mockAppState: appState,
         testScreen: ViewPasswordContainer('1234'),
       ),
     );
@@ -47,7 +43,7 @@ void main() {
     await tester.pumpWidget(
       testApp(
         mockNavigatorObserver: navigator,
-        mockStore: store,
+        mockAppState: appState,
         testScreen: ViewPasswordContainer('1234'),
       ),
     );
@@ -59,7 +55,7 @@ void main() {
   testWidgets('should toggle show/hide password', (WidgetTester tester) async {
     await tester.pumpWidget(testApp(
         mockNavigatorObserver: navigator,
-        mockStore: store,
+        mockAppState: appState,
         testScreen: ViewPasswordContainer('1234')));
     final toggleShowPassword = find.byKey(Key('toggle-show-password'));
     await tester.tap(toggleShowPassword);
@@ -78,7 +74,7 @@ void main() {
     await tester.pumpWidget(
       testApp(
         mockNavigatorObserver: navigator,
-        mockStore: store,
+        mockAppState: appState,
         testScreen: ViewPasswordContainer('1234'),
       ),
     );

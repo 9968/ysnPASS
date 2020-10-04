@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:path_provider/path_provider.dart';
 import 'package:ysnpass/encryption/encryption.dart';
-import 'package:ysnpass/store/models/database.dart';
+import 'package:ysnpass/state/database.dart';
 
 class DatabaseFileSystem {
   Future<List<String>> getDatabaseNames() async {
@@ -17,7 +17,8 @@ class DatabaseFileSystem {
         .toList();
   }
 
-  Future<Database> openDatabase(String databaseName, String masterPassword) async {
+  Future<Database> openDatabase(
+      String databaseName, String masterPassword) async {
     final directory = await _directory;
     final databasePath = '${directory.path}/$databaseName.ysndb';
     final databaseBytes = File(databasePath).readAsBytesSync();

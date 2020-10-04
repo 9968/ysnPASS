@@ -2,20 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:ysnpass/screens/edit_password/index.dart';
-import 'package:ysnpass/store/actions/actions.dart';
-import 'package:ysnpass/store/models/app_state.dart';
-import 'package:ysnpass/store/models/password_entry.dart';
+import 'package:ysnpass/state/password_entry.dart';
 
 import '../_test_utils/utils.dart';
 
 void main() {
   final MockNavigatorObserver navigator = MockNavigatorObserver();
-
-  var store;
-
-  setUpAll(() {
-    store = mockStore(AppState());
-  });
+  final MockAppState appState = MockAppState();
 
   testWidgets(
       'should show form, dispatch SavePasswordAction with changed values and go back to previous screen',
@@ -23,7 +16,7 @@ void main() {
     await tester.pumpWidget(
       testApp(
         mockNavigatorObserver: navigator,
-        mockStore: store,
+        mockAppState: appState,
         testScreen: EditPasswordScreen(
           passwordEntry:
               PasswordEntry('entryname', 'user1234', 'pass1234', id: '1234'),
@@ -42,14 +35,14 @@ void main() {
     await tester.tap(find.byType(RaisedButton));
 
     verify(
-      store.dispatch(
+      appState.savePassword(
         argThat(
-          predicate<SavePasswordAction>(
-            (action) =>
-                action.passwordEntry.name == 'entryname' &&
-                action.passwordEntry.username == 'user1234' &&
-                action.passwordEntry.password == 'changed' &&
-                action.passwordEntry.id == '1234',
+          predicate<PasswordEntry>(
+            (entry) =>
+                entry.name == 'entryname' &&
+                entry.username == 'user1234' &&
+                entry.password == 'changed' &&
+                entry.id == '1234',
           ),
         ),
       ),

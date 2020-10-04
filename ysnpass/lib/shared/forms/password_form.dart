@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:ysnpass/store/models/password_entry.dart';
+import 'package:ysnpass/state/password_entry.dart';
 
 class PasswordForm extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
-  final Function(PasswordEntry) onSubmit;
+  final void Function(PasswordEntry) onSubmit;
   final PasswordEntry passwordEntry;
 
   PasswordForm({@required this.onSubmit, this.passwordEntry});

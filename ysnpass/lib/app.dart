@@ -1,19 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:redux/redux.dart';
 import 'package:ysnpass/screens/view_databases/index.dart';
-import 'package:ysnpass/store/actions/actions.dart';
-import 'package:ysnpass/store/models/app_state.dart';
+import 'package:ysnpass/state/app_state.dart';
+import 'package:provider/provider.dart';
 
 class YsnPassApp extends StatelessWidget {
-  final Store<AppState> store;
-
-  const YsnPassApp({Key key, this.store}) : super(key: key);
+  const YsnPassApp({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return StoreProvider(
-      store: store,
+    return ChangeNotifierProvider(
+      create: (context) => AppState(),
       child: MaterialApp(
         title: 'ysnPASS',
         theme: ThemeData(
@@ -25,8 +21,7 @@ class YsnPassApp extends StatelessWidget {
           buttonColor: Color(0xFF151d27),
           accentColor: Colors.blue,
         ),
-        home: ViewDatabases(
-            onInit: () => store.dispatch(LoadDatabaseNamesAction())),
+        home: ViewDatabases(),
       ),
     );
   }

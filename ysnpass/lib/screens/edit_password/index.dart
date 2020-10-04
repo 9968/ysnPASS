@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ysnpass/store/models/password_entry.dart';
+import 'package:ysnpass/state/password_entry.dart';
 
 import 'edit_password_form.dart';
 

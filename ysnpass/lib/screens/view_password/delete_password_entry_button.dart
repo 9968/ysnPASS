@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:ysnpass/state/app_state.dart';
 
 class DeletePasswordEntryButton extends StatelessWidget {
-  final Function deleteCallback;
-  DeletePasswordEntryButton({@required this.deleteCallback});
+  final entry;
+  DeletePasswordEntryButton(this.entry);
 
   @override
   Widget build(BuildContext context) {
@@ -10,7 +12,7 @@ class DeletePasswordEntryButton extends StatelessWidget {
       icon: Icon(Icons.delete),
       label: Text('DELETE PASSWORD'),
       onPressed: () {
-        deleteCallback();
+        Provider.of<AppState>(context, listen: false).deletePassword(entry);
         Navigator.pop(context);
       },
     );

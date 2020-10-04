@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
+import 'package:provider/provider.dart';
 import 'package:ysnpass/screens/view_databases/request_password_dialog.dart';
-import 'package:ysnpass/store/actions/actions.dart';
-import 'package:ysnpass/store/models/app_state.dart';
-import 'package:ysnpass/store/selectors/selectors.dart';
+import 'package:ysnpass/state/app_state.dart';
 
 class DatabaseListViewModel {
   final List<String> databaseList;
@@ -18,31 +16,24 @@ class DatabaseListViewModel {
 class DatabaseListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, DatabaseListViewModel>(converter: (store) {
-      return DatabaseListViewModel(
-        databasesSelector(store.state),
-        (databaseName) => store.dispatch(
-          RemoveDatabaseAction(databaseName),
-        ),
-      );
-    }, builder: (context, databaseListViewModel) {
-      return ListView(
+    return Consumer<AppState>(
+      builder: (context, appState, _) => ListView(
         shrinkWrap: true,
-        children: databaseListViewModel.databaseList
+        children: appState.databases
             .map(
               (databaseName) => ListTile(
                 title: Text(databaseName),
                 trailing: IconButton(
                     icon: Icon(Icons.delete),
                     onPressed: () {
-                      databaseListViewModel.removeDatabase(databaseName);
+                      appState.removeDatabase(databaseName);
                     }),
                 onTap: () => _onTapDatabase(context, databaseName),
               ),
             )
             .toList(),
-      );
-    });
+      ),
+    );
   }
 
   _onTapDatabase(context, databaseName) async {
