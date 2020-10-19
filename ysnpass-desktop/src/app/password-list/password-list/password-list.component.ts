@@ -20,7 +20,6 @@ export class PasswordListComponent implements OnInit {
   }
 
   addPassword(): void {
-    this.passwordList$.subscribe((list) => console.log(list));
     this.store.dispatch(
       PasswordListActions.addPassword({
         passwordEntry: { user: 'user2', name: 'name2', password: 'password2' },
