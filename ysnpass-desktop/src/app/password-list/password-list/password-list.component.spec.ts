@@ -22,7 +22,5 @@ describe('PasswordListComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should show list of passwords', () => {
-
-  });
+  it('should show list of passwords', () => {});
 });
