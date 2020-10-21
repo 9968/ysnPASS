@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { PasswordFormDialogComponent } from 'src/app/password-form-dialog/password-form-dialog/password-form-dialog.component';
 import { PasswordEntry } from 'src/app/store/reducers/password-list.reducer';
 import { selectPasswordList } from 'src/app/store/selectors/password-list.selectors';
 import * as PasswordListActions from '../../store/actions/password-list.actions';
@@ -11,7 +13,7 @@ import * as PasswordListActions from '../../store/actions/password-list.actions'
   styleUrls: ['./password-list.component.css'],
 })
 export class PasswordListComponent implements OnInit {
-  constructor(private readonly store: Store) {}
+  constructor(private store: Store, private dialog: MatDialog) {}
 
   passwordList$: Observable<PasswordEntry[]>;
 
@@ -20,6 +22,7 @@ export class PasswordListComponent implements OnInit {
   }
 
   addPassword(): void {
+    const dialogRef = this.dialog.open(PasswordFormDialogComponent);
     this.store.dispatch(
       PasswordListActions.addPassword({
         passwordEntry: { user: 'user2', name: 'name2', password: 'password2' },

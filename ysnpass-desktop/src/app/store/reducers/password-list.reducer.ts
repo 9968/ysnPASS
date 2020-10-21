@@ -7,9 +7,7 @@ export interface PasswordEntry {
   password: string;
 }
 
-export const initialPasswordList = [
-  { name: 'name1', user: 'user1', password: 'savepassword123' },
-];
+export const initialPasswordList = [];
 
 export const passwordListReducer = createReducer(
   initialPasswordList,
