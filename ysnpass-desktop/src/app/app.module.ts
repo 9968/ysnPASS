@@ -1,7 +1,10 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoreModule } from '@ngrx/store';
@@ -29,6 +32,9 @@ import { appReducers } from './store/reducers/app-state.reducers';
     BrowserAnimationsModule,
     MatDialogModule,
     MatButtonModule,
+    MatInputModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
   ],
   entryComponents: [PasswordFormDialogComponent],
   providers: [],

@@ -23,10 +23,12 @@ export class PasswordListComponent implements OnInit {
 
   addPassword(): void {
     const dialogRef = this.dialog.open(PasswordFormDialogComponent);
-    this.store.dispatch(
-      PasswordListActions.addPassword({
-        passwordEntry: { user: 'user2', name: 'name2', password: 'password2' },
-      })
-    );
+    dialogRef.afterClosed().subscribe((passwordEntry: PasswordEntry) => {
+      this.store.dispatch(
+        PasswordListActions.addPassword({
+          passwordEntry,
+        })
+      );
+    });
   }
 }
