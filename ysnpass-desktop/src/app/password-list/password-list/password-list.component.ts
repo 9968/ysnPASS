@@ -22,7 +22,9 @@ export class PasswordListComponent implements OnInit {
   }
 
   addPassword(): void {
-    const dialogRef = this.dialog.open(PasswordFormDialogComponent);
+    const dialogRef = this.dialog.open(PasswordFormDialogComponent, {
+      data: new PasswordEntry(),
+    });
     dialogRef.afterClosed().subscribe((passwordEntry: PasswordEntry) => {
       this.store.dispatch(
         PasswordListActions.addPassword({
@@ -30,5 +32,8 @@ export class PasswordListComponent implements OnInit {
         })
       );
     });
+  }
+  deletePassword(passwordId: string): void {
+    this.store.dispatch(PasswordListActions.deletePassword({ passwordId }));
   }
 }

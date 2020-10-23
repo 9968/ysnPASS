@@ -16,14 +16,14 @@ export class PasswordFormDialogComponent {
     fb: FormBuilder
   ) {
     this.passwordForm = fb.group({
-      name: new FormControl(data?.name ?? ''),
-      user: new FormControl(data?.user ?? ''),
-      password: new FormControl(data?.password ?? ''),
+      name: new FormControl(data.name),
+      user: new FormControl(data.user),
+      password: new FormControl(data.password),
     });
   }
 
   onSubmit(): void {
-    this.dialogRef.close(this.passwordForm.value);
+    this.dialogRef.close({ ...this.data, ...this.passwordForm.value });
   }
   onCancel(): void {
     this.dialogRef.close();
