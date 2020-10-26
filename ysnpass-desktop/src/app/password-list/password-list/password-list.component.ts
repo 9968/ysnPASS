@@ -33,6 +33,19 @@ export class PasswordListComponent implements OnInit {
       );
     });
   }
+  editPassword(passwordEntry: PasswordEntry): void {
+    const dialogRef = this.dialog.open(PasswordFormDialogComponent, {
+      data: passwordEntry,
+    });
+    dialogRef.afterClosed().subscribe((editedEntry: PasswordEntry) => {
+      this.store.dispatch(
+        PasswordListActions.editPassword({
+          passwordEntry: editedEntry,
+        })
+      );
+    });
+  }
+
   deletePassword(passwordId: string): void {
     this.store.dispatch(PasswordListActions.deletePassword({ passwordId }));
   }

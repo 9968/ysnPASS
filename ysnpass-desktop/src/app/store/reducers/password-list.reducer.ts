@@ -25,5 +25,16 @@ export const passwordListReducer = createReducer(
     // filter is better for <100 items after that splice becomes better
     (state: PasswordEntry[], { passwordId }) =>
       state.filter((password) => password.id !== passwordId)
+  ),
+  on(
+    PasswordListActions.editPassword,
+    (state: PasswordEntry[], { passwordEntry }) => {
+      const newState = [...state];
+      const idx = newState.findIndex(
+        (entry: PasswordEntry) => entry.id === passwordEntry.id
+      );
+      newState[idx] = passwordEntry;
+      return newState;
+    }
   )
 );
