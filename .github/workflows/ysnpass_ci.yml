@@ -3,12 +3,8 @@ name: YSNPASS CI
 on:
   push:
     branches: [develop]
-    paths:
-      - "ysnpass/**"
   pull_request:
     branches: [develop]
-    paths:
-      - "ysnpass/**"
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -26,6 +22,5 @@ jobs:
       - uses: subosito/flutter-action@v1
         with:
           channel: dev
-      - run: cd ysnpass
       - run: flutter pub get
       - run: flutter test
